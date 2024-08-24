@@ -71,6 +71,43 @@ if(!passwordValid){
 
     }, process.env.SECRet_KEY || 'queseyo');
 
-    res.json(token);
+    res.json({token});
 
+}
+
+///////////////
+export const detailsUser = async (req: Request, res: Response) =>{
+
+    const headerToken = req.headers['authorization']
+    type myToken = {
+        email: string
+    }
+
+    
+    if (headerToken !=undefined && headerToken.startsWith('Bearer')){
+        try {
+            
+            const bearerToken=headerToken.slice(7);
+            const decoded = jwt.verify(bearerToken, process.env.SECRET_KEY || 'queseyo') as myToken;
+            const email =decoded.email;
+            const user: any = await User.findOne({ where: {email : email}});
+
+            res.json({
+                email : `${user.email}`,
+                name : `${user.name}`,
+                lastname : `${user.lastname}`,
+                id : `${user.id}`,
+
+            })
+
+
+            console.log(email);
+
+        } catch (error) {
+            
+            res.status(401).json({
+                msg: 'token no valido'
+            })
+        }
+    } 
 }

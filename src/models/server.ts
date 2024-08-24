@@ -1,4 +1,5 @@
 import express, {Application} from 'express';
+import cors from 'cors';
 import routesFacilities from '../routes/facility';
 import routesUser from '../routes/user';
 import sequelize from '../db/connection';
@@ -32,6 +33,7 @@ class Server{
 
     middlewares() {
         this.app.use(express.json());
+        this.app.use(cors());
     }
 
 //

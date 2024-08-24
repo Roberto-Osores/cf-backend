@@ -5,5 +5,5 @@ import { Facility } from '../models/facility';
 
     const listFacilities = await Facility.findAll();
 
-    res.json(listFacilities)
+    res.json(listFacilities);
 }
