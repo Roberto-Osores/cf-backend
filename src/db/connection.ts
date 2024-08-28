@@ -1,9 +1,17 @@
 import { Sequelize } from 'sequelize';
+import dotenv from 'dotenv';
 
-// cf = nombre del schema // usuario de mysql // contraseña de mysql
-const sequelize = new Sequelize ('cf', 'root', '1234', {
-    host: 'localhost',
+
+dotenv.config();
+const db_name : string = process.env.DB_NAME as string;
+const db_username: string = process.env.DB_USERNAME as string;
+const db_password: string = process.env.DB_PASSWORD as string;
+const db_host: string = process.env.DB_HOST as string;
+
+
+const sequelize = new Sequelize (db_name, db_username, db_password, {
+    host: db_host,
     dialect: 'mysql'
-})
+});
 
 export default sequelize;
