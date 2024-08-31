@@ -2,32 +2,33 @@ import swaggerJsDoc from "swagger-jsdoc"
 /**
  * @openapi
  * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  *   schemas:
  *     CreateUserInput:
  *       type: object
  *       required:
- *         - id
  *         - name
  *         - lastname
  *         - password
+ *         - email
  *       properties:
- *         id:
- *           type: integer
- *           description: Unique identification number. Auto generated.
  *         name:
  *           type: string
- *           descripton: Name/s of the User.
+ *           description: "Nombre/s del usuario."
  *         lastname:
  *           type: string
- *           descripton: Lastname/s of the User.
- *         email:
- *           type: string
- *           description: The User email. Unique value.
+ *           description: "Apellido/s del usuario."
  *         password:
  *           type: string
- *           description: Password for accesing the web services.
+ *           description: "Contraseña del usuario"
+ *         email:
+ *           type: string
+ *           description: "Correo electronico del usuario. Cada correo solo puede estar asociado a una unica cuenta"
  *       example:
- *         id: 999
  *         name: John
  *         lastname: Doe
  *         email: johndoe@gmail.com
@@ -41,10 +42,13 @@ import swaggerJsDoc from "swagger-jsdoc"
  *       properties:
  *         name:
  *           type: string
+ *           description: "Nombre/s usados en el registro del usuario"
  *         lastname:
  *           type: string
+ *           description: "Apellido/s usados en el registro del usuario"
  *         email:
  *           type: string
+ *           description: "Correo electronico usado en el registro del usuario"
  *     LoginUserInput:
  *       type: object
  *       required:
@@ -53,28 +57,13 @@ import swaggerJsDoc from "swagger-jsdoc"
  *       properties:
  *         email:
  *           type: string
- *           description: The User email. Unique value.
+ *           description: "Correo electronico del usuario que fue usado durante el proceso de registro"
  *         password:
  *           type: string
- *           description: Password for accesing the web services.
+ *           description: "Contraseña registrada por el usuario durante el proceso de registro"
  *       example:
- *         email: heisenberg@gmail.com
- *         password: cookingblue
- *     LoginUserResponse:
- *       type: object
- *       required:
- *         - email
- *         - password
- *       properties:
- *         email:
- *           type: string
- *           description: The User email. Unique value.
- *         password:
- *           type: string
- *           description: Password for accesing the web services.
- *       example:
- *         email: heisenberg@gmail.com
- *         password: cookingblue
+ *         email: johndoe@gmail.com
+ *         password: strongpassword
  *     UserDetailsResponse:
  *       type: object
  *       required:
@@ -82,8 +71,21 @@ import swaggerJsDoc from "swagger-jsdoc"
  *         - name
  *         - lastname
  *         - email
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: "Nombre/s del usuario. Obtenidod desde la base de datos"
+ *         lastname:
+ *           type: string
+ *           description: "Apellido/s del usuario. Obtenido desde la base de datos"
+ *         password:
+ *           type: string
+ *           description: "Contraseña del usuario. Obtenido desde la base de datos"
+ *         email:
+ *           type: string
+ *           description: "Correo electronico del usuario. Obtenido desde la base de datos"
  *       example:
- *         id: 999
+ *         id: 41
  *         name: John
  *         lastname: Doe
  *         email: johndoe@gmail.com
@@ -92,9 +94,9 @@ const swaggerSpec = swaggerJsDoc({
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "CF API",
+      title: "API Challenge Monitoreo",
       version: "1.0.0",
-      description: "CF Api aims provides valuable data for monitoring and managing facilities",
+      description: "Esta API busca brindar los servicios esenciales para el funcionamiento de la aplicacion web de monitoreo",
     },
     components:{
         securitySchemes:{

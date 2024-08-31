@@ -14,7 +14,7 @@ export const newUser = async (req: Request, res: Response) =>{
     if (user) {
         return res.status(409).json({ 
         })
-    } //EL return "frena el hilo de ejecucion de la funcion flecha"
+    }
 
     const hashedPassword = await bcrypt.hash(password, 3) //bcrypt recibe de parametro el pass y un numero, y encrypta el pass
 
@@ -92,10 +92,11 @@ export const detailsUser = async (req: Request, res: Response) =>{
             const user: any = await User.findOne({ where: {email : email}});
 
             res.status(200).json({
-                email : `${user.email}`,
+                id : `${user.id}`,
                 name : `${user.name}`,
                 lastname : `${user.lastname}`,
-                id : `${user.id}`,
+                email : `${user.email}`
+                
 
             })
 

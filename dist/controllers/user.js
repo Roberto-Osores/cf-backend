@@ -22,7 +22,7 @@ const newUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_1.User.findOne({ where: { email: email } });
     if (user) {
         return res.status(409).json({});
-    } //EL return "frena el hilo de ejecucion de la funcion flecha"
+    }
     const hashedPassword = yield bcrypt_1.default.hash(password, 3); //bcrypt recibe de parametro el pass y un numero, y encrypta el pass
     try {
         yield user_1.User.create({
@@ -76,10 +76,10 @@ const detailsUser = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             const email = decoded.email;
             const user = yield user_1.User.findOne({ where: { email: email } });
             res.status(200).json({
-                email: `${user.email}`,
+                id: `${user.id}`,
                 name: `${user.name}`,
                 lastname: `${user.lastname}`,
-                id: `${user.id}`,
+                email: `${user.email}`
             });
             console.log(email);
         }

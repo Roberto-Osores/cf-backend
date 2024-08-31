@@ -10,7 +10,7 @@ const router = Router();
    *  post:
    *     tags:
    *     - User
-   *     summary: Register a user
+   *     summary: "Registro de nuevo usuario. Debe incluir: nombre/s, apellido/s y correo electronico."
    *     requestBody:
    *      required: true
    *      content:
@@ -18,16 +18,16 @@ const router = Router();
    *           schema:
    *              $ref: '#/components/schemas/CreateUserInput'
    *     responses:
-   *      200:
-   *        description: Success
+   *      201:
+   *        description: Creado con exito
    *        content:
    *          application/json:
    *            schema:
    *              $ref: '#/components/schemas/CreateUserResponse'
    *      409:
-   *        description: Conflict
+   *        description: Ocurrio un conflicto. Este correo electronico ya existe en la base de datos.
    *      400:
-   *        description: Bad request
+   *        description: No se recibieron los parametros esperados.
    */
 router.post('/', newUser);
 /**
@@ -36,7 +36,7 @@ router.post('/', newUser);
    *  post:
    *     tags:
    *     - User
-   *     summary: Login User
+   *     summary: "Ingreso de usuario al servicio web. Requiere correo electronico y contraseña"
    *     requestBody:
    *      required: true
    *      content:
@@ -45,31 +45,34 @@ router.post('/', newUser);
    *              $ref: '#/components/schemas/LoginUserInput'
    *     responses:
    *      200:
-   *        description: Success
+   *        description: "Ingreso exitoso"
    *        content:
    *          application/json:
    *            schema:
    *              $ref: '#/components/schemas/LoginUserResponse'
    *      404:
-   *        description: Not found.
+   *        description: "Correo electronico y/o contraseña incorrectos"
    */
 router.post('/login', loginUser);
 /**
    * @openapi
    * '/api/users/details':
    *  get:
+   *     security:
+   *     - bearerAuth: []
    *     tags:
    *     - User
-   *     summary: Obtains authenticathed User details
+   * 
+   *     summary: "Recibe el Bearer Token en el header del request. Y devuelve como response, los datos del usuario"
    *     responses:
    *      200:
-   *        description: Success
+   *        description: Exito
    *        content:
    *          application/json:
    *            schema:
    *              $ref: '#/components/schemas/UserDetailsResponse'
    *      401:
-   *        description: Unauthorized.
+   *        description: Intento de acceso no autorizado
    */
 router.get('/details', validateToken, detailsUser);
 
