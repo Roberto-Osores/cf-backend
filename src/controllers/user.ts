@@ -12,8 +12,7 @@ export const newUser = async (req: Request, res: Response) =>{
     const user = await User.findOne({ where: {email : email}});
 
     if (user) {
-        return res.status(400).json({ 
-            msg: `Ya existe una cuenta registrada para el correo ${email}.`
+        return res.status(409).json({ 
         })
     } //EL return "frena el hilo de ejecucion de la funcion flecha"
 
@@ -51,8 +50,8 @@ export const loginUser = async (req: Request, res: Response) =>{
 const user: any = await User.findOne({ where: {email : email}});
 
 if (!user){
-    return res.status(400).json({
-        msg: `El correo ${email} no tiene una cuenta registrada}`
+    return res.status(404).json({
+        msg: `Correo o password incorrectos`
     })
 }
 
@@ -60,8 +59,8 @@ if (!user){
 
 const passwordValid = await bcrypt.compare(password, user.password)
 if(!passwordValid){
-    return res.status(400).json({
-        msg: 'El password es incorrecto'
+    return res.status(404).json({
+        msg: `Correo o password incorrectos`
     })
 }
 

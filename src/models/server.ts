@@ -5,6 +5,8 @@ import routesUser from '../routes/user';
 import sequelize from '../db/connection';
 import { Facility } from './facility';
 import { User } from './user';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from '../swagger';
 
 class Server{
     private app: Application;
@@ -29,6 +31,7 @@ class Server{
     routes() {
         this.app.use('/api/facilities', routesFacilities);
         this.app.use('/api/users', routesUser);
+        this.app.use ('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
     }
 
     middlewares() {

@@ -21,9 +21,7 @@ const newUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     //Revisa si ya existe un usuario creado para este correo, si existe muestra un mensaje, si no crea el registro
     const user = yield user_1.User.findOne({ where: { email: email } });
     if (user) {
-        return res.status(400).json({
-            msg: `Ya existe una cuenta registrada para el correo ${email}.`
-        });
+        return res.status(409).json({});
     } //EL return "frena el hilo de ejecucion de la funcion flecha"
     const hashedPassword = yield bcrypt_1.default.hash(password, 3); //bcrypt recibe de parametro el pass y un numero, y encrypta el pass
     try {
@@ -50,15 +48,15 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     //Existe el usuario??
     const user = yield user_1.User.findOne({ where: { email: email } });
     if (!user) {
-        return res.status(400).json({
-            msg: `El correo ${email} no tiene una cuenta registrada}`
+        return res.status(404).json({
+            msg: `Correo o password incorrectos`
         });
     }
     //El pass es correcto?
     const passwordValid = yield bcrypt_1.default.compare(password, user.password);
     if (!passwordValid) {
-        return res.status(400).json({
-            msg: 'El password es incorrecto'
+        return res.status(404).json({
+            msg: `Correo o password incorrectos`
         });
     }
     //Enviamos un JWT

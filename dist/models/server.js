@@ -18,6 +18,8 @@ const facility_1 = __importDefault(require("../routes/facility"));
 const user_1 = __importDefault(require("../routes/user"));
 const facility_2 = require("./facility");
 const user_2 = require("./user");
+const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
+const swagger_1 = __importDefault(require("../swagger"));
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -35,6 +37,7 @@ class Server {
     routes() {
         this.app.use('/api/facilities', facility_1.default);
         this.app.use('/api/users', user_1.default);
+        this.app.use('/api/docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.default));
     }
     middlewares() {
         this.app.use(express_1.default.json());
