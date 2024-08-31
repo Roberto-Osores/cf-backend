@@ -16,6 +16,9 @@ exports.detailsUser = exports.loginUser = exports.newUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = require("../models/user");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const secret_key = process.env.SECRET_KEY;
 const newUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password, name, lastname } = req.body; // Obtenemos la informacion del usuario del request
     //Revisa si ya existe un usuario creado para este correo, si existe muestra un mensaje, si no crea el registro
@@ -62,7 +65,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     //Enviamos un JWT
     const token = jsonwebtoken_1.default.sign({
         email: email
-    }, process.env.SECRet_KEY || 'queseyo');
+    }, secret_key);
     res.json({ token });
 });
 exports.loginUser = loginUser;
@@ -72,7 +75,7 @@ const detailsUser = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     if (headerToken != undefined && headerToken.startsWith('Bearer')) {
         try {
             const bearerToken = headerToken.slice(7);
-            const decoded = jsonwebtoken_1.default.verify(bearerToken, process.env.SECRET_KEY || 'queseyo');
+            const decoded = jsonwebtoken_1.default.verify(bearerToken, secret_key);
             const email = decoded.email;
             const user = yield user_1.User.findOne({ where: { email: email } });
             res.status(200).json({

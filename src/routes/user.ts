@@ -46,10 +46,6 @@ router.post('/', newUser);
    *     responses:
    *      200:
    *        description: "Ingreso exitoso"
-   *        content:
-   *          application/json:
-   *            schema:
-   *              $ref: '#/components/schemas/LoginUserResponse'
    *      404:
    *        description: "Correo electronico y/o contraseña incorrectos"
    */

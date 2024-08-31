@@ -2,6 +2,10 @@ import { Request, Response} from 'express';
 import bcrypt from 'bcrypt';
 import { User } from '../models/user';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
+const secret_key : string = process.env.SECRET_KEY as string;
 
 
 export const newUser = async (req: Request, res: Response) =>{
@@ -68,7 +72,7 @@ if(!passwordValid){
     const token = jwt.sign({
         email: email
 
-    }, process.env.SECRet_KEY || 'queseyo');
+    }, secret_key);
 
     res.json({token});
 
@@ -87,7 +91,7 @@ export const detailsUser = async (req: Request, res: Response) =>{
         try {
             
             const bearerToken=headerToken.slice(7);
-            const decoded = jwt.verify(bearerToken, process.env.SECRET_KEY || 'queseyo') as myToken;
+            const decoded = jwt.verify(bearerToken, secret_key) as myToken;
             const email =decoded.email;
             const user: any = await User.findOne({ where: {email : email}});
 
@@ -97,7 +101,6 @@ export const detailsUser = async (req: Request, res: Response) =>{
                 lastname : `${user.lastname}`,
                 email : `${user.email}`
                 
-
             })
 
 
