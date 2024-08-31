@@ -32,11 +32,11 @@ const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
  *           type: string
  *           description: Password for accesing the web services.
  *       example:
- *         id: 007
- *         name: Saul
- *         lastname: Goodman
- *         email: heisenberg@gmail.com
- *         password: cookingblue
+ *         id: 999
+ *         name: John
+ *         lastname: Doe
+ *         email: johndoe@gmail.com
+ *         password: strongpassword
  *     CreateUserResponse:
  *       type: object
  *       required:
@@ -80,27 +80,18 @@ const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
  *       example:
  *         email: heisenberg@gmail.com
  *         password: cookingblue
- *     BookUpdate:
+ *     UserDetailsResponse:
  *       type: object
- *       optional:
- *         - title
- *         - author
- *         - published
- *       properties:
- *         title:
- *           type: string
- *           description: Title of the book
- *         author:
- *           type: string
- *           descripton: Name of the author of the book
- *         published:
- *           type: boolean
- *           descripton: If the book is published or not
+ *       required:
+ *         - id
+ *         - name
+ *         - lastname
+ *         - email
  *       example:
- *         title: An updated book title
- *         author: A new author
- *         published: true
- *
+ *         id: 999
+ *         name: John
+ *         lastname: Doe
+ *         email: johndoe@gmail.com
  */
 const swaggerSpec = (0, swagger_jsdoc_1.default)({
     definition: {
@@ -110,6 +101,20 @@ const swaggerSpec = (0, swagger_jsdoc_1.default)({
             version: "1.0.0",
             description: "CF Api aims provides valuable data for monitoring and managing facilities",
         },
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: "http",
+                    scheme: 'bearer',
+                    bearerFormat: "JWT",
+                }
+            }
+        },
+        security: [
+            {
+                bearerAuth: [],
+            }
+        ],
     },
     apis: [
         `${__dirname}/routes/*.js`,

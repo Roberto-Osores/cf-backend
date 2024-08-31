@@ -91,7 +91,7 @@ export const detailsUser = async (req: Request, res: Response) =>{
             const email =decoded.email;
             const user: any = await User.findOne({ where: {email : email}});
 
-            res.json({
+            res.status(200).json({
                 email : `${user.email}`,
                 name : `${user.name}`,
                 lastname : `${user.lastname}`,
@@ -105,7 +105,7 @@ export const detailsUser = async (req: Request, res: Response) =>{
         } catch (error) {
             
             res.status(401).json({
-                msg: 'token no valido'
+                msg: 'Unauthorized'
             })
         }
     } 

@@ -75,7 +75,7 @@ const detailsUser = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             const decoded = jsonwebtoken_1.default.verify(bearerToken, process.env.SECRET_KEY || 'queseyo');
             const email = decoded.email;
             const user = yield user_1.User.findOne({ where: { email: email } });
-            res.json({
+            res.status(200).json({
                 email: `${user.email}`,
                 name: `${user.name}`,
                 lastname: `${user.lastname}`,
@@ -85,7 +85,7 @@ const detailsUser = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         catch (error) {
             res.status(401).json({
-                msg: 'token no valido'
+                msg: 'Unauthorized'
             });
         }
     }

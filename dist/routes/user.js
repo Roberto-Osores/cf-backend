@@ -57,5 +57,22 @@ router.post('/', user_1.newUser);
    *        description: Not found.
    */
 router.post('/login', user_1.loginUser);
+/**
+   * @openapi
+   * '/api/users/details':
+   *  get:
+   *     tags:
+   *     - User
+   *     summary: Obtains authenticathed User details
+   *     responses:
+   *      200:
+   *        description: Success
+   *        content:
+   *          application/json:
+   *            schema:
+   *              $ref: '#/components/schemas/UserDetailsResponse'
+   *      401:
+   *        description: Unauthorized.
+   */
 router.get('/details', validate_token_1.default, user_1.detailsUser);
 exports.default = router;
