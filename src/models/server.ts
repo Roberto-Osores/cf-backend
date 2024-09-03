@@ -1,4 +1,4 @@
-import express, {Application} from 'express';
+import express, {Application, Request, Response} from 'express';
 import cors from 'cors';
 import routesFacilities from '../routes/facility';
 import routesUser from '../routes/user';
@@ -32,6 +32,10 @@ class Server{
         this.app.use('/api/facilities', routesFacilities);
         this.app.use('/api/users', routesUser);
         this.app.use ('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+        this.app.get ('/api/docs.json', (req: Request, res: Response)=>{
+            res.setHeader("Content-Type", "application/json");
+            res.send(swaggerSpec);
+        })
     }
 
     middlewares() {

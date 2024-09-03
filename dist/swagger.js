@@ -101,8 +101,19 @@ const swaggerSpec = (0, swagger_jsdoc_1.default)({
         info: {
             title: "API Challenge Monitoreo",
             version: "1.0.0",
-            description: "Esta API busca brindar los servicios esenciales para el funcionamiento de la aplicacion web de monitoreo",
+            description: "Esta API busca brindar los servicios esenciales para el funcionamiento de la aplicacion web de monitoreo. ¿Quieres probar la API en Postman? [Importala desde aquí.](https://cf-backend-2.onrender.com/api/docs.json) Nuestro repositorio se encuentra en [GitHub](https://github.com/Roberto-Osores/cf-backend)",
         },
+        servers: [{
+                url: "https://cf-backend-2.onrender.com/",
+            },],
+        tags: [{
+                name: "User",
+                description: "Todo lo relacionado a los destinatarios de la aplicación",
+                externalDocs: {
+                    description: "Click aquí para mas información",
+                    url: "https://github.com/Roberto-Osores/cf-backend/wiki/Usuarios",
+                }
+            },],
         components: {
             securitySchemes: {
                 bearerAuth: {
