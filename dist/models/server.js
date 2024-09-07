@@ -16,10 +16,12 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const facility_1 = __importDefault(require("../routes/facility"));
 const user_1 = __importDefault(require("../routes/user"));
+const sensor_1 = __importDefault(require("../routes/sensor"));
 const facility_2 = require("./facility");
 const user_2 = require("./user");
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const swagger_1 = __importDefault(require("../swagger"));
+const sensor_2 = require("./sensor");
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -37,6 +39,7 @@ class Server {
     routes() {
         this.app.use('/api/facilities', facility_1.default);
         this.app.use('/api/users', user_1.default);
+        this.app.use('/api/sensors', sensor_1.default);
         this.app.use('/api/docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.default));
         this.app.get('/api/docs.json', (req, res) => {
             res.setHeader("Content-Type", "application/json");
@@ -53,6 +56,7 @@ class Server {
             try {
                 yield facility_2.Facility.sync();
                 yield user_2.User.sync();
+                yield sensor_2.Sensor.sync();
             }
             catch (error) {
                 console.error('No se puedo establecer la conexion', error);

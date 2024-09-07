@@ -94,6 +94,81 @@ const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
  *         name: John
  *         lastname: Doe
  *         email: johndoe@gmail.com
+ *     SensorSummaryResponse:
+ *       type: object
+ *       required:
+ *         - Total
+ *         - Ok
+ *         - Medium
+ *         - Critical
+ *         - Disabled
+ *       properties:
+ *         Total:
+ *           type: integer
+ *           description: "Valor total de todas las lecturas de sensores"
+ *         Ok:
+ *           type: integer
+ *           description: "Valor total de todas las lecturas Ok de sensores"
+ *         Medium:
+ *           type: integer
+ *           description: "Valor total de todas las lecturas Alerta Media de sensores"
+ *         Critical:
+ *           type: integer
+ *           description: "Valor total de todas las lecturas Alerta Roja de sensores"
+ *         Disabled:
+ *           type: integer
+ *           description: "Valor total de todos los sensores deshabilitados"
+ *       example:
+ *         Total: 41
+ *         Ok: 10
+ *         Medium: 7
+ *         Critical: 15
+ *         Disabled: 9
+ *     SensorbyTypeResponse:
+ *       type: object
+ *       required:
+ *         - TemperaturaSummary
+ *         - EnergiaSummary
+ *         - PresionSummary
+ *         - TensionSummary
+ *         - VientoSummary
+ *         - MonoxidoSummary
+ *         - NivelesSummary
+ *         - OtrosGasesSummary
+ *       properties:
+ *         TemperaturaSummary:
+ *           type: array
+ *           description: "Lista ordenada de las lecturas de temperatura. Ej: [OK, Alertas Medias, Alertas Rojas]"
+ *         EnergiaSummary:
+ *           type: array
+ *           description: "Lista ordenada de las lecturas de energia. Ej: [OK, Alertas Medias, Alertas Rojas]"
+ *         PresionSummary:
+ *           type: array
+ *           description: "Lista ordenada de las lecturas de presion. Ej: [OK, Alertas Medias, Alertas Rojas]"
+ *         TensionSummary:
+ *           type: array
+ *           description: "Lista ordenada de las lecturas de tension. Ej: [OK, Alertas Medias, Alertas Rojas]"
+ *         VientoSummary:
+ *           type: array
+ *           description: "Lista ordenada de las lecturas de viento. Ej: [OK, Alertas Medias, Alertas Rojas]"
+ *         MonoxidoSummary:
+ *           type: array
+ *           description: "Lista ordenada de las lecturas de monoxido. Ej: [OK, Alertas Medias, Alertas Rojas]"
+ *         NivelesSummary:
+ *           type: array
+ *           description: "Lista ordenada de las lecturas de niveles. Ej: [OK, Alertas Medias, Alertas Rojas]"
+ *         OtrosGasesSummary:
+ *           type: array
+ *           description: "Lista ordenada de las lecturas de otros gases. Ej: [OK, Alertas Medias, Alertas Rojas]"
+ *       example:
+ *         TemperaturaSummary: [1,2,3]
+ *         EnergiaSummary: [6,4,11]
+ *         PresionSummary: [11,21,32]
+ *         TensionSummary: [34,7,1]
+ *         VientoSummary: [8,17,33]
+ *         MonoxidoSummary: [44,33,22]
+ *         NivelesSummary: [31,21,5]
+ *         OtrosGasesSummary: [23,1,4]
  */
 const swaggerSpec = (0, swagger_jsdoc_1.default)({
     definition: {

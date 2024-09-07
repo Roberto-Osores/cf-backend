@@ -71,6 +71,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.loginUser = loginUser;
 ///////////////
 const detailsUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.headers);
     const headerToken = req.headers['authorization'];
     if (headerToken != undefined && headerToken.startsWith('Bearer')) {
         try {
@@ -84,7 +85,6 @@ const detailsUser = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 lastname: `${user.lastname}`,
                 email: `${user.email}`
             });
-            console.log(email);
         }
         catch (error) {
             res.status(401).json({

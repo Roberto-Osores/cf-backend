@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize"
 import sequelize from "../db/connection"
+import { Sensor } from "./sensor";
 
 export const Facility = sequelize.define('facility', {
 
@@ -20,3 +21,5 @@ export const Facility = sequelize.define('facility', {
         allowNull: false
     }
 })
+
+Facility.hasMany(Sensor);

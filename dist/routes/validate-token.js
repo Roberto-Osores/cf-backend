@@ -4,19 +4,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const secret_key = process.env.SECRET_KEY;
 const validateToken = (req, res, next) => {
-    const headerToken = req.headers['authorization'];
-    if (headerToken != undefined && headerToken.startsWith('Bearer ')) {
-        try {
+    try {
+        const headerToken = req.headers['authorization'];
+        if (headerToken != undefined && headerToken.startsWith('Bearer ')) {
             const bearerToken = headerToken.slice(7);
-            jsonwebtoken_1.default.verify(bearerToken, process.env.SECRET_KEY || 'queseyo');
+            jsonwebtoken_1.default.verify(bearerToken, secret_key);
             next();
         }
-        catch (error) {
-            res.status(401).json({
-                msg: 'token no valido'
-            });
-        }
+    }
+    catch (error) {
+        res.status(401).json({
+            msg: 'token no valido'
+        });
     }
 };
 const decodeToken = (req, res, next) => {

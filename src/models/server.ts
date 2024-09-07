@@ -2,11 +2,13 @@ import express, {Application, Request, Response} from 'express';
 import cors from 'cors';
 import routesFacilities from '../routes/facility';
 import routesUser from '../routes/user';
+import routesSensor from '../routes/sensor';
 import sequelize from '../db/connection';
 import { Facility } from './facility';
 import { User } from './user';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from '../swagger';
+import { Sensor } from './sensor';
 
 class Server{
     private app: Application;
@@ -31,6 +33,7 @@ class Server{
     routes() {
         this.app.use('/api/facilities', routesFacilities);
         this.app.use('/api/users', routesUser);
+        this.app.use('/api/sensors', routesSensor);
         this.app.use ('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
         this.app.get ('/api/docs.json', (req: Request, res: Response)=>{
             res.setHeader("Content-Type", "application/json");
@@ -44,10 +47,14 @@ class Server{
     }
 
 //
+
+    
+
     async dbConnect(){
         try {
             await Facility.sync()
             await User.sync()
+            await Sensor.sync()
         
         } catch (error){
             console.error ('No se puedo establecer la conexion', error);

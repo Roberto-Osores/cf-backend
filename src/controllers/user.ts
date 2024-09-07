@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { User } from '../models/user';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { STRING } from 'sequelize';
 
 dotenv.config();
 const secret_key : string = process.env.SECRET_KEY as string;
@@ -80,16 +81,14 @@ if(!passwordValid){
 
 ///////////////
 export const detailsUser = async (req: Request, res: Response) =>{
-
-    const headerToken = req.headers['authorization']
+    console.log(req.headers);
+    const headerToken = req.headers['authorization'];
     type myToken = {
         email: string
     }
 
-    
     if (headerToken !=undefined && headerToken.startsWith('Bearer')){
-        try {
-            
+        try{
             const bearerToken=headerToken.slice(7);
             const decoded = jwt.verify(bearerToken, secret_key) as myToken;
             const email =decoded.email;
@@ -102,11 +101,9 @@ export const detailsUser = async (req: Request, res: Response) =>{
                 email : `${user.email}`
                 
             })
+        }
 
-
-            console.log(email);
-
-        } catch (error) {
+        catch (error) {
             
             res.status(401).json({
                 msg: 'Unauthorized'

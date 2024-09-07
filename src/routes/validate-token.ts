@@ -1,34 +1,34 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
 
-
+dotenv.config();
+const secret_key : string = process.env.SECRET_KEY as string;
 
 const validateToken = (req: Request, res: Response, next:NextFunction) => {
-
+try {
     const headerToken = req.headers['authorization']
-    
 
     if (headerToken !=undefined && headerToken.startsWith('Bearer ')){
-        try {
             
             
             const bearerToken=headerToken.slice(7);
-            jwt.verify(bearerToken, process.env.SECRET_KEY || 'queseyo');
+            jwt.verify(bearerToken, secret_key);
            
 
             
             
 
-            next()
-        } catch (error) {
+            next()}
+    }catch (error) {
             
             res.status(401).json({
                 msg: 'token no valido'
             })
         }
-    } 
-}
+    }; 
+
 
 const decodeToken = (req: Request, res: Response, next:NextFunction) => {
 
