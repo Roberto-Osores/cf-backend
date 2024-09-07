@@ -48,15 +48,15 @@ const sensorByType = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     const VientoOK = yield sensor_1.Sensor.findAll({ where: { status: 'OK', classification: 'Viento' } });
     const VientoMedium = yield sensor_1.Sensor.findAll({ where: { status: 'MEDIUM', classification: 'Viento' } });
     const VientoCritical = yield sensor_1.Sensor.findAll({ where: { status: 'CRITICAL', classification: 'Viento' } });
-    const MonoxidoOK = yield sensor_1.Sensor.findAll({ where: { status: 'OK', classification: 'Monoxido' } });
-    const MonoxidoMedium = yield sensor_1.Sensor.findAll({ where: { status: 'MEDIUM', classification: 'Monoxido' } });
-    const MonoxidoCritical = yield sensor_1.Sensor.findAll({ where: { status: 'CRITICAL', classification: 'Monoxido' } });
+    const MonoxidoOK = yield sensor_1.Sensor.findAll({ where: { status: 'OK', classification: 'Monoxido de Carbono' } });
+    const MonoxidoMedium = yield sensor_1.Sensor.findAll({ where: { status: 'MEDIUM', classification: 'Monoxido de Carbono' } });
+    const MonoxidoCritical = yield sensor_1.Sensor.findAll({ where: { status: 'CRITICAL', classification: 'Monoxido de Carbono' } });
     const NivelesOK = yield sensor_1.Sensor.findAll({ where: { status: 'OK', classification: 'Niveles' } });
     const NivelesMedium = yield sensor_1.Sensor.findAll({ where: { status: 'MEDIUM', classification: 'Niveles' } });
     const NivelesCritical = yield sensor_1.Sensor.findAll({ where: { status: 'CRITICAL', classification: 'Niveles' } });
-    const OtrosGasesOK = yield sensor_1.Sensor.findAll({ where: { status: 'OK', classification: 'OtrosGases' } });
-    const OtrosGasesMedium = yield sensor_1.Sensor.findAll({ where: { status: 'MEDIUM', classification: 'OtrosGases' } });
-    const OtrosGasesCritical = yield sensor_1.Sensor.findAll({ where: { status: 'CRITICAL', classification: 'OtrosGases' } });
+    const OtrosGasesOK = yield sensor_1.Sensor.findAll({ where: { status: 'OK', classification: 'Otros Gases' } });
+    const OtrosGasesMedium = yield sensor_1.Sensor.findAll({ where: { status: 'MEDIUM', classification: 'Otros Gases' } });
+    const OtrosGasesCritical = yield sensor_1.Sensor.findAll({ where: { status: 'CRITICAL', classification: 'Otros Gases' } });
     try {
         res.status(200).json({
             TemperaturaSummary: [`${TemperaturaOK.length}`, `${TemperaturaMedium.length}`, `${TemperaturaCritical.length}`],
@@ -69,7 +69,10 @@ const sensorByType = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             OtrosGasesSummary: [`${OtrosGasesOK.length}`, `${OtrosGasesMedium.length}`, `${OtrosGasesCritical.length}`]
         });
     }
-    catch (_a) {
+    catch (error) {
+        res.status(400).json({
+            msg: 'Un error ocurrio'
+        });
     }
 });
 exports.sensorByType = sensorByType;

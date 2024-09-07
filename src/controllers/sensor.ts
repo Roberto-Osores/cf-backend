@@ -51,17 +51,17 @@ export const sensorByType = async (req: Request, res: Response) =>{
     const VientoMedium = await Sensor.findAll({ where: {status : 'MEDIUM', classification : 'Viento'}});
     const VientoCritical = await Sensor.findAll({ where: {status : 'CRITICAL', classification : 'Viento'}});
 
-    const MonoxidoOK = await Sensor.findAll({ where: {status : 'OK', classification : 'Monoxido'}});
-    const MonoxidoMedium = await Sensor.findAll({ where: {status : 'MEDIUM', classification : 'Monoxido'}});
-    const MonoxidoCritical = await Sensor.findAll({ where: {status : 'CRITICAL', classification : 'Monoxido'}});
+    const MonoxidoOK = await Sensor.findAll({ where: {status : 'OK', classification : 'Monoxido de Carbono'}});
+    const MonoxidoMedium = await Sensor.findAll({ where: {status : 'MEDIUM', classification : 'Monoxido de Carbono'}});
+    const MonoxidoCritical = await Sensor.findAll({ where: {status : 'CRITICAL', classification : 'Monoxido de Carbono'}});
 
     const NivelesOK = await Sensor.findAll({ where: {status : 'OK', classification : 'Niveles'}});
     const NivelesMedium = await Sensor.findAll({ where: {status : 'MEDIUM', classification : 'Niveles'}});
     const NivelesCritical = await Sensor.findAll({ where: {status : 'CRITICAL', classification : 'Niveles'}});
 
-    const OtrosGasesOK = await Sensor.findAll({ where: {status : 'OK', classification : 'OtrosGases'}});
-    const OtrosGasesMedium = await Sensor.findAll({ where: {status : 'MEDIUM', classification : 'OtrosGases'}});
-    const OtrosGasesCritical = await Sensor.findAll({ where: {status : 'CRITICAL', classification : 'OtrosGases'}});
+    const OtrosGasesOK = await Sensor.findAll({ where: {status : 'OK', classification : 'Otros Gases'}});
+    const  OtrosGasesMedium = await Sensor.findAll({ where: {status : 'MEDIUM', classification : 'Otros Gases'}});
+    const OtrosGasesCritical = await Sensor.findAll({ where: {status : 'CRITICAL', classification : 'Otros Gases'}});
 
     try{
         
@@ -77,8 +77,10 @@ export const sensorByType = async (req: Request, res: Response) =>{
         })
     }
     
-    catch{
-
+    catch(error){
+        res.status(400).json({
+            msg: 'Un error ocurrio'
+        })
     }
 };
 
