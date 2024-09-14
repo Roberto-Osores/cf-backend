@@ -8,6 +8,13 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const secret_key = process.env.SECRET_KEY;
 const validateToken = (req, res, next) => {
+    var _a;
+    const variable = (_a = req.headers['authorization']) !== null && _a !== void 0 ? _a : '';
+    if (variable == '') {
+        res.status(401).json({
+            msg: 'Error'
+        });
+    }
     try {
         const headerToken = req.headers['authorization'];
         if (headerToken != undefined && headerToken.startsWith('Bearer ')) {

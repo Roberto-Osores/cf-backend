@@ -9,11 +9,11 @@ const validate_token_1 = __importDefault(require("./validate-token"));
 const router = (0, express_1.Router)();
 /**
    * @openapi
-   * '/api/sensors':
+   * '/api/sensors/bystatus':
    *  get:
    *     tags:
    *     - Sensors
-   *     summary: "Resumen del estado de todos los sensores."
+   *     summary: "Resumen del estado de las lecturas de todos los sensores."
    *     responses:
    *      200:
    *        description: Exito
@@ -24,23 +24,22 @@ const router = (0, express_1.Router)();
    *      401:
    *        description: Acceso no autorizado.
    */
-router.get('/', validate_token_1.default, sensor_1.sensorSummary);
+router.get('/bystatus', validate_token_1.default, sensor_1.sensorByStatus);
 /**
    * @openapi
    * '/api/sensors/byType':
    *  get:
    *     tags:
    *     - Sensors
-   *     summary: "Resumen del estado de todos los sensores y catalogados por tipo."
+   *     summary: "Resumen del estado de todos los sensores agrupados por tipo de sensor."
    *     responses:
    *      200:
    *        description: Exito
    *        content:
    *          application/json:
    *            schema:
-   *              $ref: '#/components/schemas/SensorbyTypeResponse'
    *      401:
    *        description: Acceso no autorizado.
    */
-router.get('/byType', validate_token_1.default, sensor_1.sensorByType);
+router.get('/bytype', validate_token_1.default, sensor_1.sensorByType2);
 exports.default = router;

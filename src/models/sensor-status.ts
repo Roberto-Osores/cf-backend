@@ -2,30 +2,29 @@ import { DataTypes } from "sequelize"
 import sequelize from "../db/connection"
 import { Sensor } from "./sensor";
 
-export const Facility = sequelize.define('facility', {
 
-    name:{
+export const StatusTypes = sequelize.define ('statustypes',{
+
+    statusId:{
         type: DataTypes.STRING,
         primaryKey: true,
-        unique: true,
-        allowNull: false
     },
-
-    location:{
+    description:{
         type: DataTypes.STRING,
-        allowNull: false
+        defaultValue: 'Add a description to this sensor status...'
     }
+
+
 })
 
-
-Facility.hasMany(Sensor, {
+StatusTypes.hasMany(Sensor, {
     foreignKey:{
-        name: 'facilityName',
+        name:'status'
     }
 });
 
-Sensor.belongsTo(Facility, {
+Sensor.belongsTo(StatusTypes, {
     foreignKey:{
-        name: 'facilityName',
+        name:'status'
     }
 });

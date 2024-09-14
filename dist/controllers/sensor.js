@@ -8,22 +8,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sensorByType = exports.sensorSummary = void 0;
+exports.sensorByType2 = exports.sensorByStatus = exports.sensorByType = exports.sensorSummary = void 0;
 const sensor_1 = require("../models/sensor");
+const sensor_status_1 = require("../models/sensor-status");
+const connection_1 = __importDefault(require("../db/connection"));
 const sensorSummary = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const statusOk = yield sensor_1.Sensor.findAll({ where: { status: 'OK' } });
-    const statusMedium = yield sensor_1.Sensor.findAll({ where: { status: 'MEDIUM' } });
-    const statusCritical = yield sensor_1.Sensor.findAll({ where: { status: 'CRITICAL' } });
-    const statusDisabled = yield sensor_1.Sensor.findAll({ where: { status: 'DISABLED' } });
     try {
-        res.status(200).json({
-            Total: `${statusOk.length + statusMedium.length + statusCritical.length + statusDisabled.length}`,
-            OK: `${statusOk.length}`,
-            Medium: `${statusMedium.length}`,
-            Critical: `${statusCritical.length}`,
-            Disabled: `${statusDisabled.length}`
+        const statusById = yield sensor_status_1.StatusTypes.findAll({
+            attributes: ['statusId'],
+            raw: true
         });
+        console.log(statusById);
+        const variable = statusById.map(StatusTypes => StatusTypes.dataValues);
+        const variable2 = variable.map(statusId => statusId.dataValues);
+        // console.log(variable);
+        // return variable;
+        //const  statuses = statusById.map(StatusTypes => StatusTypes.statusId);
     }
     catch (error) {
         res.status(401).json({
@@ -76,3 +80,41 @@ const sensorByType = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.sensorByType = sensorByType;
+const sensorByStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const count = yield sensor_1.Sensor.findAll({
+            group: ['status'],
+            attributes: ['status', [connection_1.default.fn('COUNT', 'status'), 'cantidad']],
+            raw: true
+        });
+        res.json({ count });
+    }
+    catch (error) {
+        res.status(401).json({
+            msg: 'Unauthorized'
+        });
+    }
+    ;
+});
+exports.sensorByStatus = sensorByStatus;
+const sensorByType2 = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const count2 = yield sensor_1.Sensor.findAll({
+            group: ['type', 'status'],
+            attributes: ['type', 'status', [connection_1.default.fn('COUNT', connection_1.default.col('status')), 'cantidad']],
+            //attributes: ['type', [sequelize.fn('COUNT', sequelize.col('status')), 'cantidad']],
+            //order: [[StatusTypes, 'status', 'DESC']],
+            order: ['type', 'status'],
+            raw: true
+        });
+        console.log(count2);
+        res.json({ count2 });
+    }
+    catch (error) {
+        res.status(401).json({
+            msg: 'Unauthorized'
+        });
+    }
+    ;
+});
+exports.sensorByType2 = sensorByType2;

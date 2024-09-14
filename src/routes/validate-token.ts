@@ -7,6 +7,16 @@ dotenv.config();
 const secret_key : string = process.env.SECRET_KEY as string;
 
 const validateToken = (req: Request, res: Response, next:NextFunction) => {
+    
+    const variable = req.headers['authorization'] ?? ''
+
+    
+    if (variable ==''){
+        
+        res.status(401).json({
+            msg: 'Error'
+        })
+    }
 try {
     const headerToken = req.headers['authorization']
 

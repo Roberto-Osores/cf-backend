@@ -1,5 +1,7 @@
-import { DataTypes } from "sequelize"
+import { DataTypes, STRING } from "sequelize"
 import sequelize from "../db/connection"
+import { Facility } from "./facility";
+import { StatusTypes } from "./sensor-status";
 
 export const Sensor = sequelize.define('sensor', {
 
@@ -9,14 +11,10 @@ export const Sensor = sequelize.define('sensor', {
         autoIncrement: true
     },
 
-    classification:{
-        type: DataTypes.ENUM('Temperatura', 'Energia', 'Presion', 'Tension', 'Viento', 'Monoxido de Carbono', 'Niveles', 'Otros gases'),
+    type:{
+        type: STRING,
         allowNull: true
     },
 
-    status:{
-        type: DataTypes.ENUM ('OK', 'MEDIUM', 'CRITICAL', 'DISABLED'),
-        allowNull: false
-    }
-
 })
+

@@ -12,12 +12,8 @@ exports.Sensor = connection_1.default.define('sensor', {
         primaryKey: true,
         autoIncrement: true
     },
-    classification: {
-        type: sequelize_1.DataTypes.ENUM('Temperatura', 'Energia', 'Presion', 'Tension', 'Viento', 'Monoxido de Carbono', 'Niveles', 'Otros gases'),
+    type: {
+        type: sequelize_1.STRING,
         allowNull: true
     },
-    status: {
-        type: sequelize_1.DataTypes.ENUM('OK', 'MEDIUM', 'CRITICAL', 'DISABLED'),
-        allowNull: false
-    }
 });

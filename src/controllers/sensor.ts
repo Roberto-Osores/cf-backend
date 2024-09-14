@@ -1,33 +1,35 @@
 import { Request, Response } from 'express';
 import { Facility } from '../models/facility';
 import { Sensor } from '../models/sensor';
+import { StatusTypes } from '../models/sensor-status';
+import sequelize from '../db/connection';
+
 
 
 export const sensorSummary = async (req: Request, res: Response) =>{
 
-    const statusOk = await Sensor.findAll({ where: {status : 'OK'}});
-    const statusMedium = await Sensor.findAll({ where: {status : 'MEDIUM'}});
-    const statusCritical = await Sensor.findAll({ where: {status : 'CRITICAL'}});
-    const statusDisabled = await Sensor.findAll({ where: {status : 'DISABLED'}});
-
     try{
-        res.status(200).json({
-            Total: `${statusOk.length + statusMedium.length + statusCritical.length + statusDisabled.length}`,
-            OK: `${statusOk.length}`,
-            Medium: `${statusMedium.length}`,
-            Critical: `${statusCritical.length}`,
-            Disabled: `${statusDisabled.length}`
+        const statusById = await StatusTypes.findAll({
+            attributes: ['statusId'],
+            raw: true
+        
+        });
+        console.log(statusById);
+        const variable = statusById.map(StatusTypes=>StatusTypes.dataValues);
+        const variable2 = variable.map(statusId=>statusId.dataValues);
+       // console.log(variable);
+       // return variable;
+        //const  statuses = statusById.map(StatusTypes => StatusTypes.statusId);
 
-        })
-    }
+        }
+    
 
     catch (error){
         res.status(401).json({
             msg: 'Unauthorized'
         });
 
-    }
-};
+    }}
 
 export const sensorByType = async (req: Request, res: Response) =>{
 
@@ -86,5 +88,42 @@ export const sensorByType = async (req: Request, res: Response) =>{
 
 
 
+export const sensorByStatus = async (req: Request, res: Response) =>{
 
+    try{
+        const count = await Sensor.findAll({
+            group: ['status'],
+            attributes: ['status', [sequelize.fn('COUNT', 'status'), 'cantidad']],
+            raw: true
+        });
+        res.json({count});
+    }
+    catch(error){
+        res.status(401).json({
+            msg: 'Unauthorized'
+        })
+    };
+}
+
+
+export const sensorByType2 = async (req: Request, res: Response) =>{
+
+    try{
+        const count2 = await Sensor.findAll({
+            group: ['type', 'status'],
+            attributes:['type', 'status', [sequelize.fn('COUNT', sequelize.col ('status')), 'cantidad']],
+            //attributes: ['type', [sequelize.fn('COUNT', sequelize.col('status')), 'cantidad']],
+            //order: [[StatusTypes, 'status', 'DESC']],
+            order: ['type', 'status'],
+            raw: true
+        });
+        console.log (count2);
+        res.json({count2});
+    }
+    catch(error){
+        res.status(401).json({
+            msg: 'Unauthorized'
+        })
+    };
+}
     
