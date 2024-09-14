@@ -87,7 +87,7 @@ const sensorByStatus = (req, res) => __awaiter(void 0, void 0, void 0, function*
             attributes: ['status', [connection_1.default.fn('COUNT', 'status'), 'cantidad']],
             raw: true
         });
-        res.json({ count });
+        res.json(count);
     }
     catch (error) {
         res.status(401).json({
@@ -108,7 +108,7 @@ const sensorByType2 = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             raw: true
         });
         console.log(count2);
-        res.json({ count2 });
+        res.json(count2);
     }
     catch (error) {
         res.status(401).json({

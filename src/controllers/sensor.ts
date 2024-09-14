@@ -96,7 +96,7 @@ export const sensorByStatus = async (req: Request, res: Response) =>{
             attributes: ['status', [sequelize.fn('COUNT', 'status'), 'cantidad']],
             raw: true
         });
-        res.json({count});
+        res.json(count);
     }
     catch(error){
         res.status(401).json({
@@ -118,7 +118,7 @@ export const sensorByType2 = async (req: Request, res: Response) =>{
             raw: true
         });
         console.log (count2);
-        res.json({count2});
+        res.json(count2);
     }
     catch(error){
         res.status(401).json({
