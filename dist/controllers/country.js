@@ -8,20 +8,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.allCountries = void 0;
+const axios_1 = __importDefault(require("axios"));
 const allCountries = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log("Aasd");
-        const response = yield fetch("https://countryapi.io/api/all?apikey=hC53vFpZrlHzU4jJGxby0sA5X0XGtzEnH9yME00K");
-        if (!response.ok) {
-            throw new Error("Hubo un error");
-        }
-        const data = yield response.json();
-        console.log(data);
+        const countryData = yield axios_1.default.get("https://restcountries.com/v2/all?fields=name,flag");
+        res.json(countryData.data);
+        console.log(countryData.data);
     }
     catch (error) {
         console.error(error);
     }
+    ;
 });
 exports.allCountries = allCountries;

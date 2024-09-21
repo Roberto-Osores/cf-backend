@@ -42,7 +42,7 @@ class Server {
         this.app.use('/api/facilities', facility_1.default);
         this.app.use('/api/users', user_1.default);
         this.app.use('/api/sensors', sensor_1.default);
-        this.app.use('api/countries', country_1.default);
+        this.app.use('/api/countries', country_1.default);
         this.app.use('/api/docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.default));
         this.app.get('/api/docs.json', (req, res) => {
             res.setHeader("Content-Type", "application/json");

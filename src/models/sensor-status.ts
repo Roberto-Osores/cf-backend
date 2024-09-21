@@ -13,8 +13,6 @@ export const StatusTypes = sequelize.define ('statustypes',{
         type: DataTypes.STRING,
         defaultValue: 'Add a description to this sensor status...'
     }
-
-
 })
 
 StatusTypes.hasMany(Sensor, {

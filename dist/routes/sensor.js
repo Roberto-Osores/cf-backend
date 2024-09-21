@@ -20,7 +20,6 @@ const router = (0, express_1.Router)();
    *        content:
    *          application/json:
    *            schema:
-   *              $ref: '#/components/schemas/SensorSummaryResponse'
    *      401:
    *        description: Acceso no autorizado.
    */
@@ -41,5 +40,5 @@ router.get('/bystatus', validate_token_1.default, sensor_1.sensorByStatus);
    *      401:
    *        description: Acceso no autorizado.
    */
-router.get('/bytype', validate_token_1.default, sensor_1.sensorByType2);
+router.get('/bytype', validate_token_1.default, sensor_1.getSensorCounts2);
 exports.default = router;

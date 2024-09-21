@@ -111,10 +111,10 @@ export const sensorByType2 = async (req: Request, res: Response) =>{
     try{
         const count2 = await Sensor.findAll({
             group: ['type', 'status'],
-            attributes:['type', 'status', [sequelize.fn('COUNT', sequelize.col ('status')), 'cantidad']],
+            attributes:['type', 'status', [sequelize.fn('COUNT', sequelize.col ('id')), 'cantidad']],
             //attributes: ['type', [sequelize.fn('COUNT', sequelize.col('status')), 'cantidad']],
             //order: [[StatusTypes, 'status', 'DESC']],
-            order: ['type', 'status'],
+            order: ['type'],
             raw: true
         });
         console.log (count2);
@@ -127,3 +127,78 @@ export const sensorByType2 = async (req: Request, res: Response) =>{
     };
 }
     
+interface SensorStatusCount {
+    type?: string;
+    [status: string]: number | string | undefined;
+}
+
+
+export async function getSensorCounts(): Promise<SensorStatusCount[]> {
+    try {
+        
+        const results = await Sensor.findAll({
+            attributes: [
+                'type',
+                'status',
+                [sequelize.fn('COUNT', sequelize.col('status')), 'count'],
+            ],
+            group: ['type', 'status'],
+        });
+
+        
+        const sensorCounts: Record<string, SensorStatusCount> = {};
+
+        results.forEach(row => {
+            const type = row.getDataValue('type');
+            const status = row.getDataValue('status');
+            const count = row.getDataValue('count');
+
+            if (!sensorCounts[type]) {
+                sensorCounts[type] = { type }; 
+            }
+
+            sensorCounts[type][status] = count; 
+        });
+        console.log(JSON.stringify(sensorCounts, null, 2));
+        Response.json(JSON.stringify(sensorCounts, null, 2));
+        return Object.values(sensorCounts);
+    } catch (error) {
+        console.error('Error fetching sensor counts:', error);
+        throw error; 
+    }
+}
+
+export const getSensorCounts2 = async (req: Request, res: Response) =>{
+    try {
+        
+        const results = await Sensor.findAll({
+            attributes: [
+                'type',
+                'status',
+                [sequelize.fn('COUNT', sequelize.col('status')), 'count'],
+            ],
+            group: ['type', 'status'],
+        });
+
+        
+        const sensorCounts: Record<string, SensorStatusCount> = {};
+
+        results.forEach(row => {
+            const type = row.getDataValue('type');
+            const status = row.getDataValue('status');
+            const count = row.getDataValue('count');
+
+            if (!sensorCounts[type]) {
+                sensorCounts[type] = { type }; 
+            }
+
+            sensorCounts[type][status] = count; 
+        });
+        console.log(JSON.stringify(sensorCounts, null, 2));
+        res.json(sensorCounts);
+        return Object.values(sensorCounts);
+    } catch (error) {
+        console.error('Error fetching sensor counts:', error);
+        throw error; 
+    }
+}

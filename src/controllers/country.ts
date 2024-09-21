@@ -1,22 +1,18 @@
 import { Request, Response } from 'express';
+import axios from 'axios';
 
 
 
 
 export const allCountries = async (req: Request, res: Response) =>{
     try{
-        console.log("Aasd");
-        const response = await fetch("https://countryapi.io/api/all?apikey=hC53vFpZrlHzU4jJGxby0sA5X0XGtzEnH9yME00K");
+        const countryData = await axios.get("https://restcountries.com/v2/all?fields=name,flag");
 
-        if(!response.ok){
-            throw new Error("Hubo un error");
-        }
-
-        const data = await response.json();
-        console.log(data);
+        res.json(countryData.data);
+        console.log(countryData.data);
     }
 
     catch(error){
         console.error(error);
-    }
+    };
 }

@@ -12,7 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sensorByType2 = exports.sensorByStatus = exports.sensorByType = exports.sensorSummary = void 0;
+exports.getSensorCounts2 = exports.sensorByType2 = exports.sensorByStatus = exports.sensorByType = exports.sensorSummary = void 0;
+exports.getSensorCounts = getSensorCounts;
 const sensor_1 = require("../models/sensor");
 const sensor_status_1 = require("../models/sensor-status");
 const connection_1 = __importDefault(require("../db/connection"));
@@ -101,10 +102,10 @@ const sensorByType2 = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     try {
         const count2 = yield sensor_1.Sensor.findAll({
             group: ['type', 'status'],
-            attributes: ['type', 'status', [connection_1.default.fn('COUNT', connection_1.default.col('status')), 'cantidad']],
+            attributes: ['type', 'status', [connection_1.default.fn('COUNT', connection_1.default.col('id')), 'cantidad']],
             //attributes: ['type', [sequelize.fn('COUNT', sequelize.col('status')), 'cantidad']],
             //order: [[StatusTypes, 'status', 'DESC']],
-            order: ['type', 'status'],
+            order: ['type'],
             raw: true
         });
         console.log(count2);
@@ -118,3 +119,64 @@ const sensorByType2 = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     ;
 });
 exports.sensorByType2 = sensorByType2;
+function getSensorCounts() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const results = yield sensor_1.Sensor.findAll({
+                attributes: [
+                    'type',
+                    'status',
+                    [connection_1.default.fn('COUNT', connection_1.default.col('status')), 'count'],
+                ],
+                group: ['type', 'status'],
+            });
+            const sensorCounts = {};
+            results.forEach(row => {
+                const type = row.getDataValue('type');
+                const status = row.getDataValue('status');
+                const count = row.getDataValue('count');
+                if (!sensorCounts[type]) {
+                    sensorCounts[type] = { type };
+                }
+                sensorCounts[type][status] = count;
+            });
+            console.log(JSON.stringify(sensorCounts, null, 2));
+            Response.json(JSON.stringify(sensorCounts, null, 2));
+            return Object.values(sensorCounts);
+        }
+        catch (error) {
+            console.error('Error fetching sensor counts:', error);
+            throw error;
+        }
+    });
+}
+const getSensorCounts2 = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const results = yield sensor_1.Sensor.findAll({
+            attributes: [
+                'type',
+                'status',
+                [connection_1.default.fn('COUNT', connection_1.default.col('status')), 'count'],
+            ],
+            group: ['type', 'status'],
+        });
+        const sensorCounts = {};
+        results.forEach(row => {
+            const type = row.getDataValue('type');
+            const status = row.getDataValue('status');
+            const count = row.getDataValue('count');
+            if (!sensorCounts[type]) {
+                sensorCounts[type] = { type };
+            }
+            sensorCounts[type][status] = count;
+        });
+        console.log(JSON.stringify(sensorCounts, null, 2));
+        res.json(sensorCounts);
+        return Object.values(sensorCounts);
+    }
+    catch (error) {
+        console.error('Error fetching sensor counts:', error);
+        throw error;
+    }
+});
+exports.getSensorCounts2 = getSensorCounts2;

@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { sensorByStatus, sensorByType2 } from '../controllers/sensor';
+import { sensorByStatus, getSensorCounts2} from '../controllers/sensor';
 import validateToken from './validate-token';
 
 const router = Router();
@@ -18,7 +18,6 @@ const router = Router();
    *        content:
    *          application/json:
    *            schema:
-   *              $ref: '#/components/schemas/SensorSummaryResponse'
    *      401:
    *        description: Acceso no autorizado.
    */
@@ -39,7 +38,7 @@ router.get('/bystatus', validateToken, sensorByStatus);
    *      401:
    *        description: Acceso no autorizado.
    */
-router.get('/bytype', validateToken, sensorByType2);
+router.get('/bytype', validateToken, getSensorCounts2);
 
 
 
