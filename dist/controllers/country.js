@@ -8,6 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -17,12 +28,16 @@ const axios_1 = __importDefault(require("axios"));
 const allCountries = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const countryData = yield axios_1.default.get("https://restcountries.com/v2/all?fields=name,flag");
-        res.json(countryData.data);
-        console.log(countryData.data);
+        const modifiedData = countryData.data.map((country) => {
+            const { independent } = country, rest = __rest(country, ["independent"]);
+            return rest;
+        });
+        res.json(modifiedData);
+        console.log(modifiedData);
     }
     catch (error) {
         console.error(error);
+        res.status(500).send("Error retrieving country data");
     }
-    ;
 });
 exports.allCountries = allCountries;
