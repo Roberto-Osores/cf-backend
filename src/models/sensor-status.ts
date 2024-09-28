@@ -9,11 +9,22 @@ export const StatusTypes = sequelize.define ('statustypes',{
         type: DataTypes.STRING,
         primaryKey: true,
     },
+    color:{
+        type: DataTypes.STRING,
+        defaultValue: "Color default",
+        allowNull:false
+    },
     description:{
         type: DataTypes.STRING,
         defaultValue: 'Add a description to this sensor status...'
     }
-})
+},
+{
+    timestamps: false,
+    tableName: 'statustype'
+    
+}
+)
 
 StatusTypes.hasMany(Sensor, {
     foreignKey:{

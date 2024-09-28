@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSensorCounts2 = exports.sensorByType2 = exports.sensorByStatus = exports.sensorByType = exports.sensorSummary = void 0;
+exports.postSensor = exports.getSensorCountsFinal = exports.getSensorCounts2 = exports.sensorByType2 = exports.sensorByStatus = exports.sensorByType = exports.sensorSummary = void 0;
 exports.getSensorCounts = getSensorCounts;
 const sensor_1 = require("../models/sensor");
 const sensor_status_1 = require("../models/sensor-status");
@@ -83,12 +83,32 @@ const sensorByType = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.sensorByType = sensorByType;
 const sensorByStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const count = yield sensor_1.Sensor.findAll({
+        const results = yield sensor_1.Sensor.findAll({
             group: ['status'],
-            attributes: ['status', [connection_1.default.fn('COUNT', 'status'), 'cantidad']],
-            raw: true
+            attributes: [
+                'status',
+                [connection_1.default.fn('COUNT', 'status'), 'cantidad'],
+                [connection_1.default.col('statustype.color'), 'color']
+            ],
+            include: [
+                {
+                    model: sensor_status_1.StatusTypes, // The model for the 'statustype' table
+                    attributes: [],
+                }
+            ],
         });
-        res.json(count);
+        const sensorStats = [];
+        results.forEach(row => {
+            const status = row.getDataValue('status');
+            const count = row.getDataValue('cantidad');
+            const color = row.getDataValue('color');
+            sensorStats.push({
+                status,
+                count,
+                color
+            });
+        });
+        res.json(sensorStats);
     }
     catch (error) {
         res.status(401).json({
@@ -157,22 +177,41 @@ const getSensorCounts2 = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 'type',
                 'status',
                 [connection_1.default.fn('COUNT', connection_1.default.col('status')), 'count'],
+                [connection_1.default.col('statustype.color'), 'color']
             ],
-            group: ['type', 'status'],
+            include: [
+                {
+                    model: sensor_status_1.StatusTypes,
+                    attributes: ['color'],
+                }
+            ],
+            group: ['type', 'status', 'statustype.color'],
         });
-        const sensorCounts = {};
+        const sensorCounts = [];
         results.forEach(row => {
             const type = row.getDataValue('type');
             const status = row.getDataValue('status');
             const count = row.getDataValue('count');
-            if (!sensorCounts[type]) {
-                sensorCounts[type] = { type };
-            }
-            sensorCounts[type][status] = count;
+            const color = row.getDataValue('color');
+            sensorCounts.push({
+                type,
+                status,
+                count,
+                color
+            });
+            //let existingType = sensorCounts.find(item => item.type === type);
+            // if (!existingType) {
+            //     // Si no existe, crear un nuevo objeto para el tipo
+            //     existingType = { type };
+            //     sensorCounts.push(existingType);
+            // }
+            //
+            // // Asignar el conteo al estado en el objeto correspondiente
+            // existingType[status] = count;
         });
         console.log(JSON.stringify(sensorCounts, null, 2));
         res.json(sensorCounts);
-        return Object.values(sensorCounts);
+        return sensorCounts;
     }
     catch (error) {
         console.error('Error fetching sensor counts:', error);
@@ -180,3 +219,58 @@ const getSensorCounts2 = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.getSensorCounts2 = getSensorCounts2;
+const getSensorCountsFinal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const results = yield sensor_1.Sensor.findAll({
+            attributes: [
+                'type',
+                'status',
+                [connection_1.default.fn('COUNT', connection_1.default.col('status')), 'count'],
+            ],
+            group: ['type', 'status'],
+        });
+        const sensorCounts = [];
+        results.forEach(row => {
+            const type = row.getDataValue('type');
+            const status = row.getDataValue('status');
+            const count = row.getDataValue('count');
+            // Find the object in the array with the matching type
+            let sensor = sensorCounts.find(s => s.type === type);
+            // If no object with this type exists, create a new one
+            if (!sensor) {
+                sensor = { type };
+                sensorCounts.push(sensor);
+            }
+            // Add the status and count to the sensor object
+            sensor[status] = count;
+        });
+        console.log(JSON.stringify(sensorCounts, null, 2));
+        res.json(sensorCounts);
+        return sensorCounts;
+    }
+    catch (error) {
+        console.error('Error fetching sensor counts:', error);
+        throw error;
+    }
+});
+exports.getSensorCountsFinal = getSensorCountsFinal;
+const postSensor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { type, facilityName, status } = req.body;
+    try {
+        yield sensor_1.Sensor.create({
+            type: type,
+            facilityName: facilityName,
+            status: status
+        });
+        res.json({
+            msg: `El sensor de tipo ${type} y estado " ${status} " perteneciente a la planta ${facilityName} fue registrado con exito.`,
+        });
+    }
+    catch (error) {
+        res.status(400).json({
+            msg: 'Ocurrio un error!',
+            error
+        });
+    }
+});
+exports.postSensor = postSensor;

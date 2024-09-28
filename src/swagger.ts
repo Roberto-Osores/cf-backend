@@ -93,6 +93,42 @@ import swaggerJsDoc from "swagger-jsdoc"
  *       type: array
  *       items:
  *         type: object
+ *     postSensorInput:
+ *       type: object
+ *       required:
+ *         - type
+ *         - facilityName
+ *         - status
+ *       properties:
+ *         type:
+ *           type: string
+ *           description: "Tipo del sensor."
+ *         facilityName:
+ *           type: string
+ *           description: "Planta a la que pertenece el sensor."
+ *         status:
+ *           type: string
+ *           description: "Estado actual del sensor"
+ *       example:
+ *         type: niveles
+ *         facilityName: planta
+ *         status: lectura ok
+ *     postSensorResponse:
+ *       type: object
+ *       required:
+ *         - type
+ *         - facilityName
+ *         - status
+ *       properties:
+ *         type:
+ *           type: string
+ *           description: "Tipo del sensor registrado"
+ *         facilityName:
+ *           type: string
+ *           description: "Planta a la que pertenece el sensor"
+ *         status:
+ *           type: string
+ *           description: "Estado actual del sensor"
  */
 const swaggerSpec = swaggerJsDoc({
   definition: {

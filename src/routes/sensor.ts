@@ -1,10 +1,35 @@
 import {Router} from 'express';
-import { sensorByStatus, getSensorCounts2} from '../controllers/sensor';
+import { sensorByStatus, getSensorCountsFinal, postSensor} from '../controllers/sensor';
 import validateToken from './validate-token';
 
 const router = Router();
 
-
+/**
+   * @openapi
+   * '/api/sensors':
+   *  post:
+   *     tags:
+   *     - Sensors
+   *     summary: "Registro de un nuevo sensor. Debe incluir: tipo del sensor, planta a la que pertenece y estado actual."
+   *     requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *           schema:
+   *              $ref: '#/components/schemas/postSensorInput'
+   *     responses:
+   *      201:
+   *        description: Creado con exito
+   *        content:
+   *          application/json:
+   *            schema:
+   *              $ref: '#/components/schemas/postSensorResponse'
+   *      409:
+   *        description: Ocurrio un conflicto. Este correo electronico ya existe en la base de datos.
+   *      400:
+   *        description: No se recibieron los parametros esperados.
+   */
+router.post('/', postSensor)
 /**
    * @openapi
    * '/api/sensors/bystatus':
@@ -38,7 +63,7 @@ router.get('/bystatus', validateToken, sensorByStatus);
    *      401:
    *        description: Acceso no autorizado.
    */
-router.get('/bytype', validateToken, getSensorCounts2);
+router.get('/bytype', validateToken, getSensorCountsFinal);
 
 
 

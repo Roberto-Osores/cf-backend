@@ -91,12 +91,40 @@ export const sensorByType = async (req: Request, res: Response) =>{
 export const sensorByStatus = async (req: Request, res: Response) =>{
 
     try{
-        const count = await Sensor.findAll({
+        const results = await Sensor.findAll({
             group: ['status'],
-            attributes: ['status', [sequelize.fn('COUNT', 'status'), 'cantidad']],
-            raw: true
+            attributes: [
+                'status',
+                 [sequelize.fn('COUNT', 'status'), 'cantidad'],
+                 [sequelize.col('statustype.color'), 'color']
+                ],
+            include: [
+                {
+                    model: StatusTypes,  // The model for the 'statustype' table
+                    attributes: [],
+                }
+            ],
+
+            
+            
         });
-        res.json(count);
+
+        const sensorStats: any[]=[];
+
+        results.forEach(row => {
+            
+            const status = row.getDataValue('status');
+            const count = row.getDataValue('cantidad');
+            const color = row.getDataValue('color');
+
+            sensorStats.push({
+                status,
+                count,
+                color
+            });
+        });
+
+        res.json(sensorStats);
     }
     catch(error){
         res.status(401).json({
@@ -176,29 +204,115 @@ export const getSensorCounts2 = async (req: Request, res: Response) =>{
                 'type',
                 'status',
                 [sequelize.fn('COUNT', sequelize.col('status')), 'count'],
+                [sequelize.col('statustype.color'), 'color']
+
+            ],
+            include:[
+                {
+                    model: StatusTypes,
+                    attributes: ['color'],
+                }
+            ],
+            group: ['type', 'status', 'statustype.color'],
+        });
+
+        
+        const sensorCounts: any[]=[];
+
+        results.forEach(row => {
+            const type = row.getDataValue('type');
+            const status = row.getDataValue('status');
+            const count = row.getDataValue('count');
+            const color = row.getDataValue('color');
+
+            sensorCounts.push({
+                type,
+                status,
+                count,
+                color
+            });
+            //let existingType = sensorCounts.find(item => item.type === type);
+
+           // if (!existingType) {
+           //     // Si no existe, crear un nuevo objeto para el tipo
+           //     existingType = { type };
+           //     sensorCounts.push(existingType);
+           // }
+        //
+           // // Asignar el conteo al estado en el objeto correspondiente
+           // existingType[status] = count;
+        });
+        console.log(JSON.stringify(sensorCounts, null, 2));
+        res.json(sensorCounts);
+        return sensorCounts;
+    } catch (error) {
+        console.error('Error fetching sensor counts:', error);
+        throw error; 
+    }
+}
+
+export const getSensorCountsFinal = async (req: Request, res: Response) => {
+    try {
+        const results = await Sensor.findAll({
+            attributes: [
+                'type',
+                'status',
+                [sequelize.fn('COUNT', sequelize.col('status')), 'count'],
             ],
             group: ['type', 'status'],
         });
 
-        
-        const sensorCounts: Record<string, SensorStatusCount> = {};
+        const sensorCounts: SensorStatusCount[] = [];
 
         results.forEach(row => {
             const type = row.getDataValue('type');
             const status = row.getDataValue('status');
             const count = row.getDataValue('count');
 
-            if (!sensorCounts[type]) {
-                sensorCounts[type] = { type }; 
+            // Find the object in the array with the matching type
+            let sensor = sensorCounts.find(s => s.type === type);
+
+            // If no object with this type exists, create a new one
+            if (!sensor) {
+                sensor = { type };
+                sensorCounts.push(sensor);
             }
 
-            sensorCounts[type][status] = count; 
+            // Add the status and count to the sensor object
+            sensor[status] = count;
         });
+
         console.log(JSON.stringify(sensorCounts, null, 2));
         res.json(sensorCounts);
-        return Object.values(sensorCounts);
+        return sensorCounts;
     } catch (error) {
         console.error('Error fetching sensor counts:', error);
-        throw error; 
+        throw error;
     }
+};
+
+
+export const postSensor = async (req: Request, res: Response) => {
+
+    const { type, facilityName, status } = req.body;
+
+    try{
+
+        await Sensor.create({
+            type: type,
+            facilityName: facilityName,
+            status: status
+        })
+    
+        res.json({
+            msg: `El sensor de tipo ${type} y estado " ${status} " perteneciente a la planta ${facilityName} fue registrado con exito.`,
+            
+        })
+
+    } catch (error) {
+        res.status(400).json({
+            msg: 'Ocurrio un error!',
+            error
+        })
 }
+};

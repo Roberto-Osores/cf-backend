@@ -12,10 +12,18 @@ exports.StatusTypes = connection_1.default.define('statustypes', {
         type: sequelize_1.DataTypes.STRING,
         primaryKey: true,
     },
+    color: {
+        type: sequelize_1.DataTypes.STRING,
+        defaultValue: "Color default",
+        allowNull: false
+    },
     description: {
         type: sequelize_1.DataTypes.STRING,
         defaultValue: 'Add a description to this sensor status...'
     }
+}, {
+    timestamps: false,
+    tableName: 'statustype'
 });
 exports.StatusTypes.hasMany(sensor_1.Sensor, {
     foreignKey: {
