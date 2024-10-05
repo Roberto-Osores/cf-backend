@@ -316,3 +316,37 @@ export const postSensor = async (req: Request, res: Response) => {
         })
 }
 };
+
+export const putSensor = async (req: Request, res: Response) => {
+    const sensorId = req.params.id;
+    const { type, facilityName, status } = req.body;
+    try{
+        const sensor = await Sensor.findByPk(sensorId);
+
+        if(!sensor) {
+            return res.status(404).json({ message: 'Sensor no encontrado. Revisa el parametro ingresado' });
+        }
+        await sensor.update({ type, facilityName, status }); 
+         return res.json(sensor);
+    }
+    catch (error){
+        return res.status(500).json({ message: 'Error actualizando sensor', error });
+    }
+}
+
+export const deleteSensor = async (req: Request, res: Response) =>{
+    const sensorId = req.params.id;
+    
+    try{
+        const sensor = await Sensor.findByPk(sensorId);
+
+        if(!sensor) {
+            return res.status(404).json({ message: 'Sensor no encontrado. Revisa el parametro ingresado' });
+        }
+        await sensor.destroy(); 
+         return res.status(204).send();
+    }
+    catch (error){
+        return res.status(500).json({ message: 'Error borrando sensor', error });
+    }
+}

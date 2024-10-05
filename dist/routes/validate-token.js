@@ -12,7 +12,7 @@ const validateToken = (req, res, next) => {
     const variable = (_a = req.headers['authorization']) !== null && _a !== void 0 ? _a : '';
     if (variable == '') {
         res.status(401).json({
-            msg: 'Error'
+            msg: 'Error al validar el token. Token no valido.'
         });
     }
     try {

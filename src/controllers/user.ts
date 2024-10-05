@@ -17,7 +17,7 @@ export const newUser = async (req: Request, res: Response) =>{
     const user = await User.findOne({ where: {email : email}});
 
     if (user) {
-        return res.status(409).json({ 
+        return res.status(400).json({ 
         })
     }
 

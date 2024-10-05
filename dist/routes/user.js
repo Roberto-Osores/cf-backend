@@ -27,10 +27,8 @@ const router = (0, express_1.Router)();
   *          application/json:
   *            schema:
   *              $ref: '#/components/schemas/CreateUserResponse'
-  *      409:
-  *        description: Ocurrio un conflicto. Este correo electronico ya existe en la base de datos.
   *      400:
-  *        description: No se recibieron los parametros esperados.
+  *        description: Ocurrio un error al intentar crear el registro.
   */
 router.post('/', user_1.newUser);
 /**
@@ -71,7 +69,7 @@ router.post('/login', user_1.loginUser);
    *            schema:
    *              $ref: '#/components/schemas/UserDetailsResponse'
    *      401:
-   *        description: Intento de acceso no autorizado
+   *        description: Error al validar el token. Token no valido.
    */
 router.get('/details', validate_token_1.default, user_1.detailsUser);
 exports.default = router;

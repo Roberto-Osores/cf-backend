@@ -25,9 +25,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.allCountries = void 0;
 const axios_1 = __importDefault(require("axios"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const country_api = process.env.COUNTRY_API;
 const allCountries = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const countryData = yield axios_1.default.get("https://restcountries.com/v2/all?fields=name,flag");
+        const countryData = yield axios_1.default.get(country_api);
         const modifiedData = countryData.data.map((country) => {
             const { independent } = country, rest = __rest(country, ["independent"]);
             return rest;

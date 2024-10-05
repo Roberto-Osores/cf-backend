@@ -14,7 +14,7 @@ const validateToken = (req: Request, res: Response, next:NextFunction) => {
     if (variable ==''){
         
         res.status(401).json({
-            msg: 'Error'
+            msg: 'Error al validar el token. Token no valido.'
         })
     }
 try {

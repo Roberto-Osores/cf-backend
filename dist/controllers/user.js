@@ -24,7 +24,7 @@ const newUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     //Revisa si ya existe un usuario creado para este correo, si existe muestra un mensaje, si no crea el registro
     const user = yield user_1.User.findOne({ where: { email: email } });
     if (user) {
-        return res.status(409).json({});
+        return res.status(400).json({});
     }
     const hashedPassword = yield bcrypt_1.default.hash(password, 3); //bcrypt recibe de parametro el pass y un numero, y encrypta el pass
     try {

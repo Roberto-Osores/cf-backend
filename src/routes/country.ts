@@ -1,5 +1,6 @@
 import {Router} from 'express';
 import { allCountries } from '../controllers/country';
+import validateToken from './validate-token';
 
 const router = Router();
 
@@ -17,10 +18,12 @@ const router = Router();
    *          application/json:
    *            schema:
    *              $ref: '#/components/schemas/SensorSummaryResponse'
-   *      400:
-   *        description: Error.
+   *      401:
+   *        description: Error al validar el token. Token no valido.
+   *      500:
+   *        description: Error al comunicarse con el servidor.
    */
-router.get('/', allCountries);
+router.get('/', validateToken, allCountries);
 
 
 export default router;

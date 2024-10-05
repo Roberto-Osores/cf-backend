@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { sensorByStatus, getSensorCountsFinal, postSensor} from '../controllers/sensor';
+import { sensorByStatus, getSensorCountsFinal, postSensor, putSensor, deleteSensor} from '../controllers/sensor';
 import validateToken from './validate-token';
 
 const router = Router();
@@ -24,12 +24,70 @@ const router = Router();
    *          application/json:
    *            schema:
    *              $ref: '#/components/schemas/postSensorResponse'
-   *      409:
-   *        description: Ocurrio un conflicto. Este correo electronico ya existe en la base de datos.
    *      400:
-   *        description: No se recibieron los parametros esperados.
+   *        description: Ocurrio un error.
+   *      401:
+   *        description: Error al validar el token. Token no valido..
    */
-router.post('/', postSensor)
+router.post('/', validateToken, postSensor)
+/**
+   * @openapi
+   * '/api/sensors/{id}':
+   *  put:
+   *     parameters:
+   *     - in: path
+   *       name: id
+   *       required: true
+   *       schema:
+   *        type: integer
+   *        minimun: 1
+   *     tags:
+   *     - Sensors
+   *     summary: "Actualizacion de un sensor. Debe incluir: tipo del sensor, planta a la que pertenece y estado actual."
+   *     requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *           schema:
+   *              $ref: '#/components/schemas/postSensorInput'
+   *     responses:
+   *      201:
+   *        description: Creado con exito
+   *        content:
+   *          application/json:
+   *            schema:
+   *              $ref: '#/components/schemas/postSensorResponse'
+   *      400:
+   *        description: Ocurrio un error.
+   *      401:
+   *        description: Error al validar el token. Token no valido..
+   */
+router.put('/:id', validateToken, putSensor)
+/**
+   * @openapi
+   * '/api/sensors/{id}':
+   *  delete:
+   *     parameters:
+   *     - in: path
+   *       name: id
+   *       required: true
+   *       schema:
+   *        type: integer
+   *        minimun: 1
+   *     tags:
+   *     - Sensors
+   *     summary: "Borrar un sensor. Recibe como parametro el id del sensor."
+   *     requestBody:
+   *      required: false
+   *     responses:
+   *      204:
+   *        description: Borrado con exito
+   *      400:
+   *        description: Ocurrio un error.
+   *      401:
+   *        description: Error al validar el token. Token no valido..
+   */
+router.delete('/:id', validateToken, deleteSensor)
 /**
    * @openapi
    * '/api/sensors/bystatus':
@@ -44,7 +102,7 @@ router.post('/', postSensor)
    *          application/json:
    *            schema:
    *      401:
-   *        description: Acceso no autorizado.
+   *        description: Error al validar el token. Token no valido..
    */
 router.get('/bystatus', validateToken, sensorByStatus);
 /**
@@ -61,7 +119,7 @@ router.get('/bystatus', validateToken, sensorByStatus);
    *          application/json:
    *            schema:
    *      401:
-   *        description: Acceso no autorizado.
+   *        description: Error al validar el token. Token no valido..
    */
 router.get('/bytype', validateToken, getSensorCountsFinal);
 

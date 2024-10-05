@@ -93,6 +93,19 @@ import swaggerJsDoc from "swagger-jsdoc"
  *       type: array
  *       items:
  *         type: object
+ *         required:
+ *         - name
+ *         - flag
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: "Nombre del país."
+ *         flag:
+ *           type: string
+ *           description: "Bandera del país."
+ *       example:
+ *         name: Argentina
+ *         flag: https://flagcdn.com/ar.svg
  *     postSensorInput:
  *       type: object
  *       required:

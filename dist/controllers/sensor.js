@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postSensor = exports.getSensorCountsFinal = exports.getSensorCounts2 = exports.sensorByType2 = exports.sensorByStatus = exports.sensorByType = exports.sensorSummary = void 0;
+exports.deleteSensor = exports.putSensor = exports.postSensor = exports.getSensorCountsFinal = exports.getSensorCounts2 = exports.sensorByType2 = exports.sensorByStatus = exports.sensorByType = exports.sensorSummary = void 0;
 exports.getSensorCounts = getSensorCounts;
 const sensor_1 = require("../models/sensor");
 const sensor_status_1 = require("../models/sensor-status");
@@ -274,3 +274,34 @@ const postSensor = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.postSensor = postSensor;
+const putSensor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const sensorId = req.params.id;
+    const { type, facilityName, status } = req.body;
+    try {
+        const sensor = yield sensor_1.Sensor.findByPk(sensorId);
+        if (!sensor) {
+            return res.status(404).json({ message: 'Sensor no encontrado. Revisa el parametro ingresado' });
+        }
+        yield sensor.update({ type, facilityName, status });
+        return res.json(sensor);
+    }
+    catch (error) {
+        return res.status(500).json({ message: 'Error actualizando sensor', error });
+    }
+});
+exports.putSensor = putSensor;
+const deleteSensor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const sensorId = req.params.id;
+    try {
+        const sensor = yield sensor_1.Sensor.findByPk(sensorId);
+        if (!sensor) {
+            return res.status(404).json({ message: 'Sensor no encontrado. Revisa el parametro ingresado' });
+        }
+        yield sensor.destroy();
+        return res.status(204).send();
+    }
+    catch (error) {
+        return res.status(500).json({ message: 'Error borrando sensor', error });
+    }
+});
+exports.deleteSensor = deleteSensor;
