@@ -262,8 +262,8 @@ const postSensor = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             facilityName: facilityName,
             status: status
         });
-        res.json({
-            msg: `El sensor de tipo ${type} y estado " ${status} " perteneciente a la planta ${facilityName} fue registrado con exito.`,
+        res.status(201).json({
+            message: `El sensor de tipo: ${type}, estado: ${status} y perteneciente a la planta ${facilityName} fue registrado con exito.`,
         });
     }
     catch (error) {

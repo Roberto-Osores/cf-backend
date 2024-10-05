@@ -304,8 +304,8 @@ export const postSensor = async (req: Request, res: Response) => {
             status: status
         })
     
-        res.json({
-            msg: `El sensor de tipo ${type} y estado " ${status} " perteneciente a la planta ${facilityName} fue registrado con exito.`,
+        res.status(201).json({
+            message: `El sensor de tipo: ${type}, estado: ${status} y perteneciente a la planta ${facilityName} fue registrado con exito.`,
             
         })
 

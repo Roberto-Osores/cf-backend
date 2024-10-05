@@ -142,6 +142,41 @@ import swaggerJsDoc from "swagger-jsdoc"
  *         status:
  *           type: string
  *           description: "Estado actual del sensor"
+ *     postSensorStatusInput:
+ *       type: object
+ *       required:
+ *         - statusId
+ *         - color
+ *         - description
+ *       properties:
+ *         statusId:
+ *           type: string
+ *           description: "Nombre del estado."
+ *         color:
+ *           type: string
+ *           description: "Color asociado al estado."
+ *         description:
+ *           type: string
+ *           description: "Descripción del estado."
+ *       example:
+ *         statusId: mantenimiento programado
+ *         color: azul
+ *         description: Sensor en mantenimiento programado
+ *     putSensorStatusInput:
+ *       type: object
+ *       required:
+ *         - color
+ *         - description
+ *       properties:
+ *         color:
+ *           type: string
+ *           description: "Color asociado al estado."
+ *         description:
+ *           type: string
+ *           description: "Descripción del estado."
+ *       example:
+ *         color: azul
+ *         description: Sensor en mantenimiento programado
  */
 const swaggerSpec = swaggerJsDoc({
   definition: {

@@ -3,6 +3,7 @@ import cors from 'cors';
 import routesFacilities from '../routes/facility';
 import routesUser from '../routes/user';
 import routesSensor from '../routes/sensor';
+import routesSensorStatus from '../routes/sensor-status'
 import routesCountries from '../routes/country';
 import sequelize from '../db/connection';
 import { Facility } from './facility';
@@ -36,6 +37,7 @@ class Server{
         this.app.use('/api/facilities', routesFacilities);
         this.app.use('/api/users', routesUser);
         this.app.use('/api/sensors', routesSensor);
+        this.app.use('/api/sensorstatus', routesSensorStatus)
         this.app.use('/api/countries', routesCountries);
         this.app.use ('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
         this.app.get ('/api/docs.json', (req: Request, res: Response)=>{

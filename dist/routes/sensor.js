@@ -23,10 +23,6 @@ const router = (0, express_1.Router)();
    *     responses:
    *      201:
    *        description: Creado con exito
-   *        content:
-   *          application/json:
-   *            schema:
-   *              $ref: '#/components/schemas/postSensorResponse'
    *      400:
    *        description: Ocurrio un error.
    *      401:

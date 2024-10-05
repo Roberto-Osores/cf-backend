@@ -17,13 +17,14 @@ const cors_1 = __importDefault(require("cors"));
 const facility_1 = __importDefault(require("../routes/facility"));
 const user_1 = __importDefault(require("../routes/user"));
 const sensor_1 = __importDefault(require("../routes/sensor"));
+const sensor_status_1 = __importDefault(require("../routes/sensor-status"));
 const country_1 = __importDefault(require("../routes/country"));
 const facility_2 = require("./facility");
 const user_2 = require("./user");
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const swagger_1 = __importDefault(require("../swagger"));
 const sensor_2 = require("./sensor");
-const sensor_status_1 = require("./sensor-status");
+const sensor_status_2 = require("./sensor-status");
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -42,6 +43,7 @@ class Server {
         this.app.use('/api/facilities', facility_1.default);
         this.app.use('/api/users', user_1.default);
         this.app.use('/api/sensors', sensor_1.default);
+        this.app.use('/api/sensorstatus', sensor_status_1.default);
         this.app.use('/api/countries', country_1.default);
         this.app.use('/api/docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.default));
         this.app.get('/api/docs.json', (req, res) => {
@@ -59,7 +61,7 @@ class Server {
             try {
                 yield facility_2.Facility.sync();
                 yield user_2.User.sync();
-                yield sensor_status_1.StatusTypes.sync();
+                yield sensor_status_2.StatusTypes.sync();
                 yield sensor_2.Sensor.sync();
             }
             catch (error) {
