@@ -8,9 +8,13 @@ const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../db/connection"));
 const sensor_1 = require("./sensor");
 exports.Facility = connection_1.default.define('facility', {
+    id: {
+        type: sequelize_1.DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     name: {
         type: sequelize_1.DataTypes.STRING,
-        primaryKey: true,
         unique: true,
         allowNull: false
     },
@@ -19,13 +23,5 @@ exports.Facility = connection_1.default.define('facility', {
         allowNull: false
     }
 });
-exports.Facility.hasMany(sensor_1.Sensor, {
-    foreignKey: {
-        name: 'facilityName',
-    }
-});
-sensor_1.Sensor.belongsTo(exports.Facility, {
-    foreignKey: {
-        name: 'facilityName',
-    }
-});
+exports.Facility.hasMany(sensor_1.Sensor);
+sensor_1.Sensor.belongsTo(exports.Facility);

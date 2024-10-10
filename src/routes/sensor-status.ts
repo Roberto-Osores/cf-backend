@@ -28,17 +28,17 @@ const router = Router();
 router.post('/', validateToken, postSensorStatus)
 /**
    * @openapi
-   * '/api/sensorstatus/{statusId}':
+   * '/api/sensorstatus/{id}':
    *  put:
    *     parameters:
    *     - in: path
-   *       name: statusId
+   *       name: id
    *       required: true
    *       schema:
-   *        type: string
+   *        type: integer
    *     tags:
    *     - Sensor Status
-   *     summary: "Actualización de un Estado de Sensor. Debe incluir: color asociado y descripción."
+   *     summary: "Actualización de un Estado de Sensor. Debe incluir: nombre del estado, color asociado y descripción."
    *     requestBody:
    *      required: true
    *      content:
@@ -46,27 +46,27 @@ router.post('/', validateToken, postSensorStatus)
    *           schema:
    *              $ref: '#/components/schemas/putSensorStatusInput'
    *     responses:
-   *      201:
+   *      204:
    *        description: Actualizado con exito
    *      400:
    *        description: Ocurrio un error.
    *      401:
    *        description: Error al validar el token. Token no valido..
    */
-router.put('/:statusId', validateToken, putSensorStatus)
+router.put('/:id', validateToken, putSensorStatus)
 /**
    * @openapi
-   * '/api/sensorstatus/{statusId}':
+   * '/api/sensorstatus/{id}':
    *  delete:
    *     parameters:
    *     - in: path
-   *       name: statusId
+   *       name: id
    *       required: true
    *       schema:
-   *        type: string
+   *        type: integer
    *     tags:
    *     - Sensor Status
-   *     summary: "Borrar un Estado de Sensor. Debe incluir como parametro el nombre del estado a borrar"
+   *     summary: "Borrar un Estado de Sensor. Debe incluir como parametro el id del estado a borrar"
    *     requestBody:
    *      required: false
    *     responses:
@@ -79,7 +79,7 @@ router.put('/:statusId', validateToken, putSensorStatus)
    *      500:
    *        description: Error al intentat realizar la operación.
    */
-router.delete('/:statusId', validateToken, deleteSensorStatus)
+router.delete('/:id', validateToken, deleteSensorStatus)
 
 
 

@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { sensorByStatus, getSensorCountsFinal, postSensor, putSensor, deleteSensor} from '../controllers/sensor';
+import {  postSensor, putSensor, deleteSensor, getSummary3, sensorByStatus2} from '../controllers/sensor';
 import validateToken from './validate-token';
 
 const router = Router();
@@ -25,7 +25,7 @@ const router = Router();
    *      401:
    *        description: Error al validar el token. Token no valido..
    */
-router.post('/', validateToken, postSensor)
+router.post('/', postSensor)
 /**
    * @openapi
    * '/api/sensors/{id}':
@@ -58,7 +58,7 @@ router.post('/', validateToken, postSensor)
    *      401:
    *        description: Error al validar el token. Token no valido..
    */
-router.put('/:id', validateToken, putSensor)
+router.put('/:id', putSensor)
 /**
    * @openapi
    * '/api/sensors/{id}':
@@ -83,7 +83,7 @@ router.put('/:id', validateToken, putSensor)
    *      401:
    *        description: Error al validar el token. Token no valido..
    */
-router.delete('/:id', validateToken, deleteSensor)
+router.delete('/:id', deleteSensor)
 /**
    * @openapi
    * '/api/sensors/bystatus':
@@ -100,7 +100,7 @@ router.delete('/:id', validateToken, deleteSensor)
    *      401:
    *        description: Error al validar el token. Token no valido..
    */
-router.get('/bystatus', validateToken, sensorByStatus);
+router.get('/bystatus', sensorByStatus2);
 /**
    * @openapi
    * '/api/sensors/byType':
@@ -117,7 +117,7 @@ router.get('/bystatus', validateToken, sensorByStatus);
    *      401:
    *        description: Error al validar el token. Token no valido..
    */
-router.get('/bytype', validateToken, getSensorCountsFinal);
+router.get('/bytype', getSummary3);
 
 
 

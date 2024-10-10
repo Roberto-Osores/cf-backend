@@ -12,15 +12,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteSensorStatus = exports.putSensorStatus = exports.postSensorStatus = void 0;
 const sensor_status_1 = require("../models/sensor-status");
 const postSensorStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { statusId, color, description } = req.body;
+    const { name, color, description } = req.body;
     try {
-        yield sensor_status_1.StatusTypes.create({
-            statusId: statusId,
+        yield sensor_status_1.Status.create({
+            name: name,
             color: color,
             description: description
         });
         res.status(201).json({
-            message: `El Estado de Sensor: ${statusId} y asociado al color: ${color} fue registrado con exito.`,
+            message: `El Estado de Sensor: ${name} y asociado al color: ${color} fue registrado con exito.`,
         });
     }
     catch (error) {
@@ -32,16 +32,15 @@ const postSensorStatus = (req, res) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.postSensorStatus = postSensorStatus;
 const putSensorStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const statusId = req.params.statusId;
-    const { color, description } = req.body;
+    const id = req.params.id;
+    const { name, color, description } = req.body;
     try {
-        const status = yield sensor_status_1.StatusTypes.findByPk(statusId);
-        console.log(status);
+        const status = yield sensor_status_1.Status.findByPk(id);
         if (!status) {
             return res.status(404).json({ message: 'Estado de Sensor no encontrado. Revisa el parametro ingresado' });
         }
-        yield status.update({ color, description });
-        return res.json(status);
+        yield status.update({ name, color, description });
+        return res.status(204).json(status);
     }
     catch (error) {
         return res.status(500).json({ message: 'Error actualizando estado de sensor', error });
@@ -49,9 +48,9 @@ const putSensorStatus = (req, res) => __awaiter(void 0, void 0, void 0, function
 });
 exports.putSensorStatus = putSensorStatus;
 const deleteSensorStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const statusId = req.params.statusId;
+    const id = req.params.id;
     try {
-        const status = yield sensor_status_1.StatusTypes.findByPk(statusId);
+        const status = yield sensor_status_1.Status.findByPk(id);
         if (!status) {
             return res.status(404).json({ message: 'Estado de sensor no encontrado. Revisa el parametro ingresado' });
         }

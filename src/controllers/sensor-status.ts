@@ -1,23 +1,23 @@
 import { Request, Response } from 'express';
 import { Sensor } from '../models/sensor';
-import { StatusTypes } from '../models/sensor-status';
+import { Status } from '../models/sensor-status';
 import sequelize from '../db/connection';
 
 
 export const postSensorStatus = async (req: Request, res: Response) => {
     
-    const { statusId, color, description } = req.body;
+    const { name, color, description } = req.body;
 
     try{
 
-        await StatusTypes.create({
-            statusId: statusId,
+        await Status.create({
+            name: name,
             color: color,
             description: description
         })
     
         res.status(201).json({
-            message: `El Estado de Sensor: ${statusId} y asociado al color: ${color} fue registrado con exito.`,
+            message: `El Estado de Sensor: ${name} y asociado al color: ${color} fue registrado con exito.`,
             
         })
     }
@@ -30,17 +30,16 @@ export const postSensorStatus = async (req: Request, res: Response) => {
 };
 
 export const putSensorStatus = async (req: Request, res: Response) => {
-    const statusId = req.params.statusId;
-    const { color, description } = req.body;
+    const id = req.params.id;
+    const { name, color, description } = req.body;
     
     try{
-        const status = await StatusTypes.findByPk(statusId);
-        console.log (status);
+        const status = await Status.findByPk(id);
         if(!status) {
             return res.status(404).json({ message: 'Estado de Sensor no encontrado. Revisa el parametro ingresado' });
         }
-        await status.update({ color, description }); 
-         return res.json(status);
+        await status.update({ name, color, description }); 
+         return res.status(204).json(status);
     }
     catch(error){
         return res.status(500).json({ message: 'Error actualizando estado de sensor', error });
@@ -48,10 +47,10 @@ export const putSensorStatus = async (req: Request, res: Response) => {
 };
 
 export const deleteSensorStatus = async (req: Request, res: Response) => {
-    const statusId = req.params.statusId;
+    const id = req.params.id;
     
     try{
-        const status = await StatusTypes.findByPk(statusId);
+        const status = await Status.findByPk(id);
 
         if(!status) {
             return res.status(404).json({ message: 'Estado de sensor no encontrado. Revisa el parametro ingresado' });

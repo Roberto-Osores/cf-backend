@@ -1,7 +1,7 @@
 import { DataTypes, STRING } from "sequelize"
 import sequelize from "../db/connection"
 import { Facility } from "./facility";
-import { StatusTypes } from "./sensor-status";
+import { Status } from "./sensor-status";
 
 export const Sensor = sequelize.define('sensor', {
 

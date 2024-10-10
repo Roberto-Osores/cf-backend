@@ -3,11 +3,17 @@ import sequelize from "../db/connection"
 import { Sensor } from "./sensor";
 
 
-export const StatusTypes = sequelize.define ('statustypes',{
+export const Status = sequelize.define ('status',{
 
-    statusId:{
-        type: DataTypes.STRING,
+    id:{
+        type: DataTypes.INTEGER,
         primaryKey: true,
+        autoIncrement: true
+    },
+
+    name:{
+        type: DataTypes.STRING,
+        unique: true
     },
     color:{
         type: DataTypes.STRING,
@@ -21,19 +27,10 @@ export const StatusTypes = sequelize.define ('statustypes',{
 },
 {
     timestamps: false,
-    tableName: 'statustype'
     
 }
 )
 
-StatusTypes.hasMany(Sensor, {
-    foreignKey:{
-        name:'status'
-    }
-});
+Status.hasMany(Sensor);
 
-Sensor.belongsTo(StatusTypes, {
-    foreignKey:{
-        name:'status'
-    }
-});
+Sensor.belongsTo(Status);

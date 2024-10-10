@@ -11,15 +11,16 @@ import { User } from './user';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from '../swagger';
 import { Sensor } from './sensor';
-import { StatusTypes } from './sensor-status';
+import { Status } from './sensor-status';
 
 class Server{
     private app: Application;
-    private port: string;
+    private port = process.env.PORT;
+
 
     constructor(){
         this.app = express();
-        this.port = process.env.PORT || '3001'; // Si en el archivo .env despues de PORT se pone ; se rompe todo
+        this.port = process.env.PORT; // Si en el archivo .env despues de PORT se pone ; se rompe todo
         this.listen();
         this.middlewares(); //Es importante que el middleware este antes de las routes/endpoints de la api. Debe ejecutarse antes.
         this.routes();
@@ -59,7 +60,7 @@ class Server{
         try {
             await Facility.sync()
             await User.sync()
-            await StatusTypes.sync()
+            await Status.sync()
             await Sensor.sync()
            
         } catch (error){

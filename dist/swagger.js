@@ -115,46 +115,46 @@ const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
  *       type: object
  *       required:
  *         - type
- *         - facilityName
- *         - status
+ *         - facilityId
+ *         - statusId
  *       properties:
  *         type:
  *           type: string
  *           description: "Tipo del sensor."
- *         facilityName:
- *           type: string
+ *         facilityId:
+ *           type: integer
  *           description: "Planta a la que pertenece el sensor."
- *         status:
- *           type: string
+ *         statusId:
+ *           type: integer
  *           description: "Estado actual del sensor"
  *       example:
  *         type: niveles
- *         facilityName: planta
- *         status: lectura ok
+ *         facilityId: 1
+ *         statusId: 1
  *     postSensorResponse:
  *       type: object
  *       required:
  *         - type
- *         - facilityName
- *         - status
+ *         - facilityId
+ *         - statusId
  *       properties:
  *         type:
  *           type: string
  *           description: "Tipo del sensor registrado"
- *         facilityName:
- *           type: string
+ *         facilityId:
+ *           type: integer
  *           description: "Planta a la que pertenece el sensor"
- *         status:
- *           type: string
+ *         statusId:
+ *           type: integer
  *           description: "Estado actual del sensor"
  *     postSensorStatusInput:
  *       type: object
  *       required:
- *         - statusId
+ *         - name
  *         - color
  *         - description
  *       properties:
- *         statusId:
+ *         name:
  *           type: string
  *           description: "Nombre del estado."
  *         color:
@@ -164,15 +164,19 @@ const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
  *           type: string
  *           description: "Descripción del estado."
  *       example:
- *         statusId: mantenimiento programado
+ *         name: mantenimiento programado
  *         color: azul
  *         description: Sensor en mantenimiento programado
  *     putSensorStatusInput:
  *       type: object
  *       required:
+ *         - name
  *         - color
  *         - description
  *       properties:
+ *         name:
+ *           type: string
+ *           description: "Nombre asociado al estado."
  *         color:
  *           type: string
  *           description: "Color asociado al estado."
@@ -180,6 +184,7 @@ const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
  *           type: string
  *           description: "Descripción del estado."
  *       example:
+ *         name: mantenimiento programado
  *         color: azul
  *         description: Sensor en mantenimiento programado
  */

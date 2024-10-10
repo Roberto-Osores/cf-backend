@@ -4,9 +4,14 @@ import { Sensor } from "./sensor";
 
 export const Facility = sequelize.define('facility', {
 
+    id:{
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+
     name:{
         type: DataTypes.STRING,
-        primaryKey: true,
         unique: true,
         allowNull: false
     },
@@ -18,14 +23,6 @@ export const Facility = sequelize.define('facility', {
 })
 
 
-Facility.hasMany(Sensor, {
-    foreignKey:{
-        name: 'facilityName',
-    }
-});
+Facility.hasMany(Sensor);
 
-Sensor.belongsTo(Facility, {
-    foreignKey:{
-        name: 'facilityName',
-    }
-});
+Sensor.belongsTo(Facility);

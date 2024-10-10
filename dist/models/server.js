@@ -27,8 +27,9 @@ const sensor_2 = require("./sensor");
 const sensor_status_2 = require("./sensor-status");
 class Server {
     constructor() {
+        this.port = process.env.PORT;
         this.app = (0, express_1.default)();
-        this.port = process.env.PORT || '3001'; // Si en el archivo .env despues de PORT se pone ; se rompe todo
+        this.port = process.env.PORT; // Si en el archivo .env despues de PORT se pone ; se rompe todo
         this.listen();
         this.middlewares(); //Es importante que el middleware este antes de las routes/endpoints de la api. Debe ejecutarse antes.
         this.routes();
@@ -61,7 +62,7 @@ class Server {
             try {
                 yield facility_2.Facility.sync();
                 yield user_2.User.sync();
-                yield sensor_status_2.StatusTypes.sync();
+                yield sensor_status_2.Status.sync();
                 yield sensor_2.Sensor.sync();
             }
             catch (error) {
