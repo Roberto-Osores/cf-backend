@@ -1,7 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const sensor_1 = require("../controllers/sensor");
+const validate_token_1 = __importDefault(require("./validate-token"));
 const router = (0, express_1.Router)();
 /**
    * @openapi
@@ -24,7 +28,7 @@ const router = (0, express_1.Router)();
    *      401:
    *        description: Error al validar el token. Token no valido..
    */
-router.post('/', sensor_1.postSensor);
+router.post('/', validate_token_1.default, sensor_1.postSensor);
 /**
    * @openapi
    * '/api/sensors/{id}':
@@ -57,7 +61,7 @@ router.post('/', sensor_1.postSensor);
    *      401:
    *        description: Error al validar el token. Token no valido..
    */
-router.put('/:id', sensor_1.putSensor);
+router.put('/:id', validate_token_1.default, sensor_1.putSensor);
 /**
    * @openapi
    * '/api/sensors/{id}':
@@ -82,7 +86,7 @@ router.put('/:id', sensor_1.putSensor);
    *      401:
    *        description: Error al validar el token. Token no valido..
    */
-router.delete('/:id', sensor_1.deleteSensor);
+router.delete('/:id', validate_token_1.default, sensor_1.deleteSensor);
 /**
    * @openapi
    * '/api/sensors/bystatus':
@@ -99,7 +103,7 @@ router.delete('/:id', sensor_1.deleteSensor);
    *      401:
    *        description: Error al validar el token. Token no valido..
    */
-router.get('/bystatus', sensor_1.sensorByStatus2);
+router.get('/bystatus', validate_token_1.default, sensor_1.sensorByStatus2);
 /**
    * @openapi
    * '/api/sensors/byType':
@@ -116,5 +120,5 @@ router.get('/bystatus', sensor_1.sensorByStatus2);
    *      401:
    *        description: Error al validar el token. Token no valido..
    */
-router.get('/bytype', sensor_1.getSummary3);
+router.get('/bytype', validate_token_1.default, sensor_1.getSummary3);
 exports.default = router;

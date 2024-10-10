@@ -25,7 +25,7 @@ const router = Router();
    *      401:
    *        description: Error al validar el token. Token no valido..
    */
-router.post('/', postSensor)
+router.post('/', validateToken, postSensor)
 /**
    * @openapi
    * '/api/sensors/{id}':
@@ -58,7 +58,7 @@ router.post('/', postSensor)
    *      401:
    *        description: Error al validar el token. Token no valido..
    */
-router.put('/:id', putSensor)
+router.put('/:id', validateToken, putSensor)
 /**
    * @openapi
    * '/api/sensors/{id}':
@@ -83,7 +83,7 @@ router.put('/:id', putSensor)
    *      401:
    *        description: Error al validar el token. Token no valido..
    */
-router.delete('/:id', deleteSensor)
+router.delete('/:id', validateToken, deleteSensor)
 /**
    * @openapi
    * '/api/sensors/bystatus':
@@ -100,7 +100,7 @@ router.delete('/:id', deleteSensor)
    *      401:
    *        description: Error al validar el token. Token no valido..
    */
-router.get('/bystatus', sensorByStatus2);
+router.get('/bystatus', validateToken, sensorByStatus2);
 /**
    * @openapi
    * '/api/sensors/byType':
@@ -117,7 +117,7 @@ router.get('/bystatus', sensorByStatus2);
    *      401:
    *        description: Error al validar el token. Token no valido..
    */
-router.get('/bytype', getSummary3);
+router.get('/bytype', validateToken, getSummary3);
 
 
 
