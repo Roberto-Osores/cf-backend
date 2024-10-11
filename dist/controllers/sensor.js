@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sensorByStatus2 = exports.getSummary3 = exports.deleteSensor = exports.putSensor = exports.postSensor = void 0;
+exports.getHeader = exports.sensorByStatus2 = exports.getSummary3 = exports.deleteSensor = exports.putSensor = exports.postSensor = void 0;
 const sensor_1 = require("../models/sensor");
 const sensor_status_1 = require("../models/sensor-status");
 const connection_1 = __importDefault(require("../db/connection"));
@@ -167,6 +167,40 @@ const sensorByStatus2 = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.sensorByStatus2 = sensorByStatus2;
+const getHeader = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const results = yield sensor_status_1.Status.findAll({
+            attributes: [
+                'name', // Status name
+                'color', // Status color
+                'description', // Status description
+                [connection_1.default.fn('COUNT', connection_1.default.col('Sensors.id')), 'count'] // Count of sensors for each status
+            ],
+            include: [
+                {
+                    model: sensor_1.Sensor, // Join with the Sensor model to count sensors
+                    attributes: [], // We don’t need sensor attributes in the response
+                }
+            ],
+            group: ['Status.id'], // Group by status ID to ensure correct counts
+        });
+        // Format the response as an array of objects
+        const statusCounts = results.map(row => ({
+            status: row.getDataValue('name'), // Status name
+            count: row.getDataValue('count'), // Count of occurrences
+            color: row.getDataValue('color'), // Status color
+            description: row.getDataValue('description') // Status description
+        }));
+        res.json(statusCounts);
+    }
+    catch (error) {
+        console.error('Error fetching status details with counts:', error);
+        res.status(500).json({
+            msg: 'Internal Server Error'
+        });
+    }
+});
+exports.getHeader = getHeader;
 //interface SensorAttributes {
 //  id: number;
 //  type: string;

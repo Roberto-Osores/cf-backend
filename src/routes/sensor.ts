@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {  postSensor, putSensor, deleteSensor, getSummary3, sensorByStatus2} from '../controllers/sensor';
+import {  postSensor, putSensor, deleteSensor, getSummary3, sensorByStatus2, getHeader} from '../controllers/sensor';
 import validateToken from './validate-token';
 
 const router = Router();
@@ -118,7 +118,23 @@ router.get('/bystatus', validateToken, sensorByStatus2);
    *        description: Error al validar el token. Token no valido..
    */
 router.get('/bytype', validateToken, getSummary3);
-
+/**
+   * @openapi
+   * '/api/sensors/test':
+   *  get:
+   *     tags:
+   *     - Sensors
+   *     summary: "Esto es una pruebar."
+   *     responses:
+   *      200:
+   *        description: Exito
+   *        content:
+   *          application/json:
+   *            schema:
+   *      401:
+   *        description: Error al validar el token. Token no valido..
+   */
+router.get ('/test', validateToken, getHeader);
 
 
 

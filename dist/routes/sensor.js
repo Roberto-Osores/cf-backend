@@ -121,4 +121,21 @@ router.get('/bystatus', validate_token_1.default, sensor_1.sensorByStatus2);
    *        description: Error al validar el token. Token no valido..
    */
 router.get('/bytype', validate_token_1.default, sensor_1.getSummary3);
+/**
+   * @openapi
+   * '/api/sensors/test':
+   *  get:
+   *     tags:
+   *     - Sensors
+   *     summary: "Esto es una pruebar."
+   *     responses:
+   *      200:
+   *        description: Exito
+   *        content:
+   *          application/json:
+   *            schema:
+   *      401:
+   *        description: Error al validar el token. Token no valido..
+   */
+router.get('/test', validate_token_1.default, sensor_1.getHeader);
 exports.default = router;

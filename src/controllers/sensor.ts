@@ -168,6 +168,41 @@ export const sensorByStatus2 = async (req: Request, res: Response) => {
   }
 };
 
+export const getHeader = async (req: Request, res: Response) => {
+  try {
+      const results = await Status.findAll({
+          attributes: [
+              'name',      // Status name
+              'color',       // Status color
+              'description', // Status description
+              [sequelize.fn('COUNT', sequelize.col('Sensors.id')), 'count']  // Count of sensors for each status
+          ],
+          include: [
+              {
+                  model: Sensor,  // Join with the Sensor model to count sensors
+                  attributes: [], // We don’t need sensor attributes in the response
+              }
+          ],
+          group: ['Status.id'],  // Group by status ID to ensure correct counts
+      });
+
+      // Format the response as an array of objects
+      const statusCounts = results.map(row => ({
+          status: row.getDataValue('name'),         // Status name
+          count: row.getDataValue('count'),           // Count of occurrences
+          color: row.getDataValue('color'),           // Status color
+          description: row.getDataValue('description') // Status description
+      }));
+
+      res.json(statusCounts);
+  } catch (error) {
+      console.error('Error fetching status details with counts:', error);
+      res.status(500).json({
+          msg: 'Internal Server Error'
+      });
+  }
+};
+
 //interface SensorAttributes {
 //  id: number;
 //  type: string;
