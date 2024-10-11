@@ -175,7 +175,7 @@ export const getHeader = async (req: Request, res: Response) => {
               'name',      // Status name
               'color',       // Status color
               'description', // Status description
-              [sequelize.fn('COUNT', sequelize.col('Sensors.id')), 'count']  // Count of sensors for each status
+              [sequelize.fn('COUNT', sequelize.col('sensors.id')), 'count']  // Count of sensors for each status
           ],
           include: [
               {

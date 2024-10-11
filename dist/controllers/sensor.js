@@ -174,7 +174,7 @@ const getHeader = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 'name', // Status name
                 'color', // Status color
                 'description', // Status description
-                [connection_1.default.fn('COUNT', connection_1.default.col('Sensors.id')), 'count'] // Count of sensors for each status
+                [connection_1.default.fn('COUNT', connection_1.default.col('sensors.id')), 'count'] // Count of sensors for each status
             ],
             include: [
                 {
