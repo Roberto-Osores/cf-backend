@@ -182,7 +182,7 @@ const getHeader = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                     attributes: [], // We don’t need sensor attributes in the response
                 }
             ],
-            group: ['Status.id'], // Group by status ID to ensure correct counts
+            group: ['status.id'], // Group by status ID to ensure correct counts
         });
         // Format the response as an array of objects
         const statusCounts = results.map(row => ({

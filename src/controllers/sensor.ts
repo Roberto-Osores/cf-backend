@@ -183,7 +183,7 @@ export const getHeader = async (req: Request, res: Response) => {
                   attributes: [], // We don’t need sensor attributes in the response
               }
           ],
-          group: ['Status.id'],  // Group by status ID to ensure correct counts
+          group: ['status.id'],  // Group by status ID to ensure correct counts
       });
 
       // Format the response as an array of objects
@@ -194,6 +194,7 @@ export const getHeader = async (req: Request, res: Response) => {
           description: row.getDataValue('description') // Status description
       }));
 
+      
       res.json(statusCounts);
   } catch (error) {
       console.error('Error fetching status details with counts:', error);
