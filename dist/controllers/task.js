@@ -33,13 +33,13 @@ const postTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.postTask = postTask;
 const putTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { descripcion } = req.body;
+    const { descripcion, estado } = req.body;
     try {
         const task = yield task_1.Task.findByPk(id);
         if (!task) {
             return res.status(404).json({ message: 'Tarea no encontrada. Revisa el parametro ingresado' });
         }
-        yield task.update({ descripcion });
+        yield task.update({ descripcion, estado });
         return res.status(204).json(task);
     }
     catch (error) {

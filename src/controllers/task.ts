@@ -27,14 +27,15 @@ export const postTask = async (req: Request, res: Response) => {
 
   export const putTask = async (req: Request, res: Response) => {
     const id = req.params.id;
-    const { descripcion } = req.body;
+    const { descripcion, estado } = req.body;
     
     try{
         const task = await Task.findByPk(id);
         if(!task) {
             return res.status(404).json({ message: 'Tarea no encontrada. Revisa el parametro ingresado' });
         }
-        await task.update({ descripcion }); 
+
+        await task.update({ descripcion, estado }); 
          return res.status(204).json(task);
     }
     catch(error){
