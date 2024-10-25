@@ -5,6 +5,7 @@ import routesUser from '../routes/user';
 import routesSensor from '../routes/sensor';
 import routesSensorStatus from '../routes/sensor-status'
 import routesCountries from '../routes/country';
+import routesTasks from '../routes/task'
 import sequelize from '../db/connection';
 import { Facility } from './facility';
 import { User } from './user';
@@ -12,6 +13,7 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from '../swagger';
 import { Sensor } from './sensor';
 import { Status } from './sensor-status';
+import { Task } from './task';
 
 class Server{
     private app: Application;
@@ -38,8 +40,9 @@ class Server{
         this.app.use('/api/facilities', routesFacilities);
         this.app.use('/api/users', routesUser);
         this.app.use('/api/sensors', routesSensor);
-        this.app.use('/api/sensorstatus', routesSensorStatus)
+        this.app.use('/api/sensorstatus', routesSensorStatus);
         this.app.use('/api/countries', routesCountries);
+        this.app.use('/api/task', routesTasks);
         this.app.use ('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
         this.app.get ('/api/docs.json', (req: Request, res: Response)=>{
             res.setHeader("Content-Type", "application/json");
@@ -62,6 +65,7 @@ class Server{
             await User.sync()
             await Status.sync()
             await Sensor.sync()
+            await Task.sync()
            
         } catch (error){
             console.error ('No se puedo establecer la conexion', error);

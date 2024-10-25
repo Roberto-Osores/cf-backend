@@ -19,12 +19,14 @@ const user_1 = __importDefault(require("../routes/user"));
 const sensor_1 = __importDefault(require("../routes/sensor"));
 const sensor_status_1 = __importDefault(require("../routes/sensor-status"));
 const country_1 = __importDefault(require("../routes/country"));
+const task_1 = __importDefault(require("../routes/task"));
 const facility_2 = require("./facility");
 const user_2 = require("./user");
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const swagger_1 = __importDefault(require("../swagger"));
 const sensor_2 = require("./sensor");
 const sensor_status_2 = require("./sensor-status");
+const task_2 = require("./task");
 class Server {
     constructor() {
         this.port = process.env.PORT;
@@ -46,6 +48,7 @@ class Server {
         this.app.use('/api/sensors', sensor_1.default);
         this.app.use('/api/sensorstatus', sensor_status_1.default);
         this.app.use('/api/countries', country_1.default);
+        this.app.use('/api/task', task_1.default);
         this.app.use('/api/docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.default));
         this.app.get('/api/docs.json', (req, res) => {
             res.setHeader("Content-Type", "application/json");
@@ -64,6 +67,7 @@ class Server {
                 yield user_2.User.sync();
                 yield sensor_status_2.Status.sync();
                 yield sensor_2.Sensor.sync();
+                yield task_2.Task.sync();
             }
             catch (error) {
                 console.error('No se puedo establecer la conexion', error);
